@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Content-Language" content="en"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		
+		<title>Tweetstr</title>
+		
+		<link rel="apple-touch-icon" href="../../../shared/images/tweetstr-icon.png" />
+		
+		<link rel="stylesheet" href="html5reset.css" type="text/css" media="screen" charset="utf-8" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8">
+		
+		<script type="text/javascript" charset="utf-8">
+			function pageLoaded() {
+				//showProfile('JakeCarter');
+				getTweets();
+			}
+			
+			function getTweets() {
+				//console.log('getTweets()');
+				
+				var client = new XMLHttpRequest();
+				client.onreadystatechange = function() {
+					if (this.readyState == XMLHttpRequest.prototype.DONE && this.status == 200) {
+						// So far so good.
+						var tweetsList = document.getElementById('tweetsList');
+						var response = eval('(' + this.responseText + ')');
+						for (var resultId in response.results) {
+							var result = response.results[resultId];
+
+							// Get info we'll use.
+							var name = result.from_user;
+							var text = result.text;
+							var imageUrl = result.profile_image_url;
+							
+							// Create Image Element
+							var imageElement = document.createElement('img');
+							imageElement.setAttribute('src', imageUrl);
+							imageElement.setAttribute('alt', name)
+							imageElement.setAttribute('class', 'user-image');
+							// imageElement.setAttribute('onClick', "showProfile('" + name + "')");
+
+							// Create username span
+							var usernameSpan = document.createElement('span');
+							usernameSpan.setAttribute('class', 'username');
+							usernameSpan.innerText = name;
+							
+							// Create message span
+							var messageSpan = document.createElement('span');
+							messageSpan.setAttribute('class', 'message');
+							messageSpan.innerText = text;
+							
+							// Create container div
+							var div = document.createElement('div');
+							div.appendChild(imageElement);
+							div.appendChild(usernameSpan);
+							div.appendChild(messageSpan);
+										
+							// Create List Item
+							var li = document.createElement('li');
+							li.appendChild(div);
+							
+							// Add List Item to List
+							tweetsList.insertBefore(li, tweetsList.firstChild);
+						}
+					}
+				};
+				var apiCall = 'http://search.twitter.com/search.json?q=OReillyMedia';
+				var requestString = '../../../shared/scripts/curl.php?apiCall=' + escape(apiCall);
+
+				client.open('GET', requestString, true);
+				client.send();
+			}
+			
+			// TODO: Add getProfileForScreenName(screenName)
+			
+			function navSelected() {
+				// First we need to clear all other nav items.
+				clearAllNavItems();
+				
+				// Now give navItem the selected css class.
+				var navItem = event.target;
+				navItem.setAttribute('class', 'selected');
+				
+				// Now do the right thing.
+				switch (navItem.id) {
+					case 'liHome':
+						getTweets();
+						switchToSectionWithId('home');
+						break;
+					case 'liMentions':
+						break;
+					case 'liFaves':
+						break;
+				}
+			}
+			
+			function clearAllNavItems() {
+				var navList = document.getElementById('navList');
+				
+				for (var i = 0; i < navList.children.length; i++) {
+					var li = navList.children[i];
+					li.setAttribute('class', '');
+				}
+			}
+			
+			function switchToSectionWithId(sectionId) {
+				hideAllSections();
+				showSectionWithId(sectionId);
+			}
+			function hideAllSections() {
+				var sections = document.getElementsByTagName('section');
+				for (var i = 0; i < sections.length; i++) {
+					var section = sections[i];
+					section.setAttribute('class', '');
+				}
+			}
+			
+			function showSectionWithId(sectionId) {
+				var section = document.getElementById(sectionId);
+				section.setAttribute('class', 'selected');
+			}
+			
+			// TODO: Add showProfile(username)
+		</script>
+	</head>
+	<body onload='pageLoaded()'>
+		<header>
+			Tweetstr
+		</header>
+		<nav>
+			<ul id='navList'>
+				<li id='liHome' onclick='navSelected()' class='selected' ></li>
+				<li id='liMentions' onclick='navSelected()'></li>
+				<li id='liFaves' onclick='navSelected()'></li>
+				<li id='liMessages' onclick='navSelected()'></li>
+				<li id='liSearch' onclick='navSelected()'></li>
+			</ul>
+		</nav>
+		<section id='home' class='selected'>
+			<ul id='tweetsList' class='tweets'>
+				<!-- <li>
+					<img class='user-image' alt='JakeCarter'
+				 	 	 src='user-image.png' />
+					<span class='username'>JakeCarter</span>
+					<span class='message'>I love twitter!</span>
+				</li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li> -->
+			</ul>
+		</section>
+		<section id='profile' class=''>
+			<img id='profileImage' />
+			<span id='name'></span>
+			<span id='screenName'></span>
+			<span id='location'></span>
+			<span id='statusText'></span>
+			<span id='followersCount'></span>
+			<span id='friendsCount'></span>
+		</section>
+	</body>
+</html>

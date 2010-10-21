@@ -1,0 +1,151 @@
+body {
+	font-family: "Helvetica";
+}
+/*
+	Header
+*/
+header {
+	width: 100%;
+	height: 44px;
+	background-image: -webkit-gradient(
+		linear, 
+		0% 0%, 
+		0% 100%, 
+		from(#666666), 
+		to(#666666), 
+		color-stop(.5,#333333)
+	);
+	
+	-webkit-box-sizing: border-box;
+	
+	text-align: center;
+	color: #ffffff;
+	padding-top: 10px;
+	
+	font-weight: bold;
+	font-size: 1.5em;
+}
+
+/* 
+	Nav
+*/
+nav {
+	height: 44px;
+	width: 100%;
+	background-image: -webkit-gradient(
+			linear, 
+			0% 0%, 
+			0% 100%, 
+			from(#aaaaaa), 
+			to(#aaaaaa), 
+			color-stop(.5,#cccccc)
+		);
+}
+nav ul {
+	height: 100%;
+	width: 320px;
+	margin-left: auto;
+	margin-right: auto;
+}
+nav ul li {
+	display: inline-block;
+	float: left;
+	width: 64px;
+	height: 100%;
+	border: 1px solid #999999;
+	-webkit-box-sizing: border-box;
+	
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+#liHome {
+	/* TODO: Add Icon */
+}
+#liHome.selected {
+	/* TODO: Add Icon */
+	background-image: -webkit-gradient(
+				linear, 
+				0% 0%, 
+				0% 100%, 
+				from(#dddddd), 
+				to(#dddddd), 
+				color-stop(.5,#cccccc)
+			);
+}
+
+#liMentions {
+	/* TODO: Add Icon */
+}
+#liMentions.selected {
+	/* TODO: Add Icon */
+	background-image: -webkit-gradient(
+				linear, 
+				0% 0%, 
+				0% 100%, 
+				from(#dddddd), 
+				to(#dddddd), 
+				color-stop(.5,#cccccc)
+			);
+}
+
+#liFaves {
+	/* TODO: Add Icon */
+}
+#liFaves.selected {
+	/* TODO: Add Icon */
+	background-image: -webkit-gradient(
+				linear, 
+				0% 0%, 
+				0% 100%, 
+				from(#dddddd), 
+				to(#dddddd), 
+				color-stop(.5,#cccccc)
+			);
+}
+
+#liMessages {
+	/* TODO: Add Icon */
+}
+#liMessages.selected {
+	/* TODO: Add Icon */
+	background-image: -webkit-gradient(
+				linear, 
+				0% 0%, 
+				0% 100%, 
+				from(#dddddd), 
+				to(#dddddd), 
+				color-stop(.5,#cccccc)
+			);
+}
+
+#liSearch {
+	/* TODO: Add Icon */
+}
+#liSearch.selected {
+	/* TODO: Add Icon */
+	background-image: -webkit-gradient(
+				linear, 
+				0% 0%, 
+				0% 100%, 
+				from(#dddddd), 
+				to(#dddddd), 
+				color-stop(.5,#cccccc)
+			);
+}
+
+/*
+	List
+*/
+section#home ul.tweets li {
+	min-height: 52px;
+}
+
+section#home ul.tweets li div {
+	padding: 2px;
+}
+
+section#home ul.tweets li div img {
+	float: left;
+	padding-right: 5px;
+}
