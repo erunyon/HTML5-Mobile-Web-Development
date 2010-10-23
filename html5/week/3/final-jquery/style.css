@@ -46,11 +46,7 @@ nav ul {
 	margin:0 auto;
 	list-style:none;
 }
-nav ul li {
-	display:inline-block;
-	float:left;
-	-webkit-box-sizing:border-box;	
-}
+nav ul li {display:inline-block; float:left; -webkit-box-sizing:border-box;}
 nav ul li.selected {
 	background-image:-webkit-gradient(
 			linear, 
@@ -84,10 +80,7 @@ section {
 	display:block;
 	opacity:0;
 }
-section.selected {
-	z-index:100;
-	opacity:1;
-}
+section.selected {z-index:100; opacity:1;}
 
 /*
 	List

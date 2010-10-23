@@ -21,13 +21,16 @@
         $nav.find('a').live('click', function(e){
           $(this).parent().addClass('selected').siblings().removeClass('selected');
           navSelected(e);
+          
           e.preventDefault();
           e.stopPropagation();
         });
         
         $('#tweetsList li img').live('click', function(e){
           var name = $(this).parent()[0].getAttribute('data-tweeter');
-          showProfile(name)
+          $nav.find('li').removeClass('selected');
+          getProfileForScreenName(name);
+          
           e.preventDefault();
           e.stopPropagation();
         });
@@ -64,23 +67,7 @@
         }
         
         function switchToSectionWithId(sectionId) {
-          hideAllSections();
-          showSectionWithId(sectionId);
-        }
-        function showSectionWithId(sectionId) {
-          var section = document.getElementById(sectionId);
-          section.setAttribute('class', 'selected');
-        }
-        function hideAllSections() {
-          var sections = document.getElementsByTagName('section');
-          for (var i = 0; i < sections.length; i++) {
-            var section = sections[i];
-            section.setAttribute('class', '');
-          }
-        }
-        function showProfile(username) {
-          $nav.find('li').removeClass('selected');
-          getProfileForScreenName(username);
+          $('#'+sectionId).addClass('selected').siblings().removeClass('selected');
         }
         
         function getProfileForScreenName(screenName) {
@@ -141,9 +128,9 @@
       <span id='followersCount'></span>
       <span id='friendsCount'></span>
     </section>
-    <section id="mentions"></section>
-    <section id="favorites"></section>
-    <section id="messages"></section>
-    <section id="search"></section>
+    <section id="mentions">Mentions</section>
+    <section id="favorites">Favorites</section>
+    <section id="messages">Messages</section>
+    <section id="search">Search</section>
   </body>
 </html>
