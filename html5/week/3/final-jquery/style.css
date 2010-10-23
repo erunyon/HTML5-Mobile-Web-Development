@@ -1,0 +1,110 @@
+body {font-family:"Helvetica";}
+ul {list-style-type:none;}
+@font-face {font-family:Chunk; src:url('../../../shared/fonts/chunk/Chunk.otf') format('opentype');}
+
+/*
+	Header
+*/
+header {
+	width:100%;
+	height:44px;
+	background-image:-webkit-gradient(
+		linear, 
+		0% 0%, 
+		0% 100%, 
+		from(#666), 
+		to(#666), 
+		color-stop(.5,#333)
+	);
+	-webkit-box-sizing:border-box;
+	text-align:center;
+	color:#fff;
+	padding-top:10px;
+	font-weight:bold;
+	font-size:1.5em;
+}
+
+/* 
+	Nav
+*/
+nav {
+	clear:both;
+	height:44px;
+	width:100%;
+	background-image:-webkit-gradient(
+			linear, 
+			0% 0%, 
+			0% 100%, 
+			from(#aaa), 
+			to(#aaa), 
+			color-stop(.5,#ccc)
+		);
+}
+nav ul {
+	height:100%;
+	width:320px;
+	margin:0 auto;
+	list-style:none;
+}
+nav ul li {
+	display:inline-block;
+	float:left;
+	-webkit-box-sizing:border-box;	
+}
+nav ul li.selected {
+	background-image:-webkit-gradient(
+			linear, 
+			0% 0%, 
+			0% 100%, 
+			from(#ddd), 
+			to(#ddd), 
+			color-stop(.5,#ccc)
+		);
+}
+nav ul li a {display:block; float:left; width:62px; height:44px; text-indent:-9999px; overflow:hidden; border:1px solid #999; background-repeat:no-repeat; background-position:center center;}
+#liHome {background-image:url('../../../shared/images/icons/icons/53-house.png');}
+#liMentions {background-image:url('../../../shared/images/icons/icons/09-chat2.png');}
+#liFaves {background-image:url('../../../shared/images/icons/icons/28-star.png');}
+#liMessages {background-image:url('../../../shared/images/icons/icons/08-chat.png');}
+#liSearch {background-image:url('../../../shared/images/icons/icons/06-magnifying-glass.png');}
+
+/*
+	Section Animations
+*/
+section {
+	-webkit-transition-property:opacity;
+	-webkit-transition-delay:0.5s;
+	-webkit-transition-duration:0.5s;
+	-webkit-transition-timing-function:ease;
+	z-index:0;
+	position:absolute;
+	top:88px;
+	width:100%;
+	background-color:#fff;
+	display:block;
+	opacity:0;
+}
+section.selected {
+	z-index:100;
+	opacity:1;
+}
+
+/*
+	List
+*/
+section {width:100%;}
+section#home ul {margin:0; list-style:none;}
+section#home ul.tweets li {min-height:52px;}
+section#home ul.tweets li:nth-child(odd) {background-color:#ddd;}
+section#home ul.tweets li {padding:2px;}
+section#home ul.tweets li img {float:left; padding-right:5px;}
+
+/*
+Profile
+*/
+section#profile {-webkit-box-sizing:border-box; padding:4px; background-color:#fff;}
+section#profile img {}
+section#profile span {display:block; padding-left:60px;}
+section#profile #profileImage {float:left;}
+section#profile #statusText,
+section#profile #followersCount {padding-top:5px;}
