@@ -17,9 +17,9 @@
   		  $nav.find('li').first().addClass('selected');
         $nav.find('a').live('click', function(e){
           $(this).parent().addClass('selected').siblings().removeClass('selected');
+          e.preventDefault();
+          e.stopPropogation();
         });
-        e.preventDefault();
-        e.stopPropogation();
       });
 		</script>
 	</head>
