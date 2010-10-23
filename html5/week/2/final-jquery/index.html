@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>Tweetstr</title>
+		<link rel="apple-touch-icon" href="../../../shared/images/tweetstr-icon.png"/>
+		<link rel="stylesheet" href="html5reset.css" type="text/css" media="screen" charset="utf-8">
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js" type="text/javascript"></script>
+		<script type="text/javascript" charset="utf-8">
+  		jQuery(function($){
+  		  $nav = $('#navList');
+  		  $nav.find('li').first().addClass('selected');
+        $nav.find('a').live('click', function(e){
+          $(this).parent().addClass('selected').siblings().removeClass('selected');
+        });
+        e.preventDefault();
+        e.stopPropogation();
+      });
+		</script>
+	</head>
+</html>
+	<body>
+		<header>Tweetstr</header>
+		<nav>
+			<ul id='navList'>
+				<li><a id='liHome' href="#home">Home</a></li>
+				<li><a id='liMentions' href="#mentions">Mentions</a></li>
+				<li><a id='liFaves' href="#favorites">Favorites</a></li>
+				<li><a id='liMessages' href="#messages">Messages</a></li>
+				<li><a id='liSearch' href="#search">Search</a></li>
+			</ul>
+		</nav>
+		<section id='home'>
+			<ul class='tweets'>
+				<li>
+					<div>
+						<img class='user-image' alt='JakeCarter' src='user-image.png'>
+						<span class='username'>JakeCarter</span>
+						<span class='message'>I love twitter!</span>
+					</div>
+				</li>
+			</ul>
+		</section>
+		<section id="mentions"></section>
+		<section id="favorites"></section>
+		<section id="messages"></section>
+		<section id="search"></section>
+	</body>
+</html>
