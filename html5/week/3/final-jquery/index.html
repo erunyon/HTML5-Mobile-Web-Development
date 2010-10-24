@@ -60,7 +60,7 @@
                   text = result.text,
                   imageUrl = result.profile_image_url;
               
-              list += '<li data-tweeter="'+name+'"><img src="'+imageUrl+'" alt="'+name+'" class="user-image"><span class="username">'+name+'</span><span class="message">'+text+'</span></li>';
+              list += '<li data-tweeter="'+name+'"><img src="'+imageUrl+'" alt="'+name+'" class="user-image"><h3 class="username">'+name+'</h3><div class="message">'+text+'</div></li>';
             }
             $('#tweetsList').html(list);
           });
@@ -72,36 +72,25 @@
         
         function getProfileForScreenName(screenName) {
           $.getJSON("http://api.twitter.com/1/users/show.json?screen_name="+screenName+"&callback=?", function(json){
-            var profile = json;
-
-            // Get HTML Elements.
-            var profileImage = document.getElementById('profileImage');
-            profileImage.setAttribute('src', profile.profile_image_url);
-            profileImage.setAttribute('alt', profile.name);
+            var profile = json,
+                output = '';
             
-            var name = document.getElementById('name');
-            name.innerText = profile.name;
-            
-            var screenName = document.getElementById('screenName');
-            screenName.innerText = "@" + profile.screen_name;
-            
-            var location = document.getElementById('location');
-            location.innerText = profile.location;
-            
-            var statusText = document.getElementById('statusText');
-            statusText.innerText = profile.status.text;
-            
-            var followersCount = document.getElementById('followersCount');
-            followersCount.innerText = "Followers: " + profile.followers_count;
-            
-            var friendsCount = document.getElementById('friendsCount');
-            friendsCount.innerText = "Following: " + profile.friends_count;
+            output += '<img src="'+profile.profile_image_url+'" alt="'+profile.name+'">';
+            output += '<h3>'+profile.name+'</h3>';
+            output += '<h4>@'+profile.screen_name+'</h4>';
+            output += '<ul><li>'+profile.location+'</li>';
+            output += '<li class="statustext">'+profile.status.text+'</li>';
+            output += '<li class="followers">Followers: '+profile.followers_count+'</li>';
+            output += '<li class="following">Following: '+profile.friends_count+'</li>';
+            $('#profile').html(output);
             
             switchToSectionWithId('profile');
           });
         }
 
       });
+      
+      window.scrollTo(0,1);
     </script>
   </head>
 </html>
@@ -119,15 +108,7 @@
     <section id='home' class='selected'>
       <ul id='tweetsList' class='tweets'></ul>
     </section>
-    <section id='profile' class=''>
-      <img id='profileImage' />
-      <span id='name'></span>
-      <span id='screenName'></span>
-      <span id='location'></span>
-      <span id='statusText'></span>
-      <span id='followersCount'></span>
-      <span id='friendsCount'></span>
-    </section>
+    <section id='profile' class=''></section>
     <section id="mentions">Mentions</section>
     <section id="favorites">Favorites</section>
     <section id="messages">Messages</section>

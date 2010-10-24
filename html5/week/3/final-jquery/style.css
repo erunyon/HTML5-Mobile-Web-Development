@@ -1,7 +1,13 @@
 body {font-family:"Helvetica";}
 ul {list-style-type:none;}
-@font-face {font-family:Chunk; src:url('../../../shared/fonts/chunk/Chunk.otf') format('opentype');}
-
+/* @font-face {font-family:Chunk; src:url('../../../shared/fonts/chunk/Chunk.otf') format('opentype');} */
+@font-face {
+	font-family: 'ChunkFiveRegular';
+	src: url('chunk-webfont.eot');
+	src: local('☺'), url('../../../shared/fonts/chunk/chunk-webfont.woff') format('woff'), url('../../../shared/fonts/chunk/chunk-webfont.ttf') format('truetype'), url('../../../shared/fonts/chunk/chunk-webfont.svg#webfontpOQwyrA8') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
 /*
 	Header
 */
@@ -16,6 +22,7 @@ header {
 		to(#666), 
 		color-stop(.5,#333)
 	);
+	font-family:'ChunkFiveRegular', Helvetica;
 	-webkit-box-sizing:border-box;
 	text-align:center;
 	color:#fff;
@@ -88,9 +95,11 @@ section.selected {z-index:100; opacity:1;}
 section {width:100%;}
 section#home ul {margin:0; list-style:none;}
 section#home ul.tweets li {min-height:52px;}
-section#home ul.tweets li:nth-child(odd) {background-color:#ddd;}
-section#home ul.tweets li {padding:2px;}
-section#home ul.tweets li img {float:left; padding-right:5px;}
+section#home ul.tweets li:nth-child(even) {background-color:#ddd;}
+section#home ul.tweets li {padding:5px;}
+section#home ul.tweets li img {float:left; margin:0 10px 0 0;}
+section#home ul.tweets li .username {margin:0 0 2px;}
+section#home ul.tweets li .message {font-size:90%;}
 
 /*
 Profile
@@ -98,6 +107,11 @@ Profile
 section#profile {-webkit-box-sizing:border-box; padding:4px; background-color:#fff;}
 section#profile img {}
 section#profile span {display:block; padding-left:60px;}
-section#profile #profileImage {float:left;}
-section#profile #statusText,
-section#profile #followersCount {padding-top:5px;}
+section#profile h3 {margin:0 0 2px; font-weight:bold;}
+section#profile h4 {margin:0 0 2px; font-style:italic;}
+section#profile img {float:left; margin:0 10px 0 0;}
+section#profile .statustext {margin:8px 0; font-size:90%;}
+section#profile .followers,
+section#profile .following {font-size:90%;}
+section#profile .followers {padding:5px 0; border-top:1px solid gray;}
+section#profile .following {}
