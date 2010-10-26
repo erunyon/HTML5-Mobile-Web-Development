@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Content-Language" content="en"/>
+		
+		<meta name="viewport" content="width=device-width, user-scalable=no" />
+		
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	
+		<title>Tweetstr</title>
+
+		<link rel="apple-touch-icon" href="../../../shared/images/tweetstr-icon.png" />
+
+		<link rel="stylesheet" href="html5reset.css" type="text/css" media="screen" charset="utf-8" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8">
+		<link rel="stylesheet" media="screen and (orientation:landscape)" 
+			href="ipad-landscape.css">
+		
+		<script src='script.js' type="text/javascript" charset="utf-8"></script>
+		
+		<script type="text/javascript">
+			function pageLoaded() {
+				addEventListeners();
+				orientationChanged();
+				getTweets();
+			}
+			
+			function addEventListeners() {
+				// TODO: Add Orientation Detection
+			}
+			
+			function orientationChanged() {
+				// TODO: Add code for orientationChanged() event handler.
+			}
+		</script>
+	</head>
+	<body onload='pageLoaded()'>
+		<header>
+			Tweetstr
+		</header>
+		<nav>
+			<ul id='navList'>
+				<li id='liHome' onclick='navSelected()' class='selected' ></li>
+				<li id='liMentions' onclick='navSelected()'></li>
+				<li id='liFaves' onclick='navSelected()'></li>
+				<li id='liMessages' onclick='navSelected()'></li>
+				<li id='liSearch' onclick='navSelected()'></li>
+			</ul>
+		</nav>
+		<section id='home' class='selected'>
+			<ul id='tweetsList' class='tweets'>
+			</ul>
+		</section>
+		<section id='profile' class=''>
+			<img id='profileImage' />
+			<span id='name'></span>
+			<span id='screenName'></span>
+			<span id='location'></span>
+			<span id='statusText'></span>
+			<span id='followersCount'></span>
+			<span id='friendsCount'></span>
+		</section>
+		<section id='map' class=''>
+			<div id='mapCanvas' style='width: 100%; height: 100%;'>Add map here!</div>
+		</section>
+	</body>
+</html>

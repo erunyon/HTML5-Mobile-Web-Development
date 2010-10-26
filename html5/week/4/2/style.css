@@ -1,0 +1,233 @@
+body {
+	font-family: 'Helvetica';
+}
+ul {
+	list-style-type: none;
+}
+@font-face {
+	font-family: Chunk;
+	src: url('../../shared/fonts/chunk/Chunk.otf') format('opentype');
+}
+/*
+	Header
+*/
+header {
+	-webkit-box-sizing: border-box;
+	width: 100%;
+	height: 44px;
+	background-image: -webkit-gradient(
+		linear, 
+		0% 0%, 
+		0% 100%, 
+		from(#666666), 
+		to(#666666), 
+		color-stop(.5,#333333)
+	);
+	font-family: Chunk, Helvetica;
+	text-align: center;
+	color: #ffffff;
+	font-weight: bold;
+	font-size: 1.5em;
+	padding-top: 11px;
+}
+
+/* 
+	Nav
+*/
+nav {
+	-webkit-transition-property: opacity;
+	-webkit-transition-delay: 0.5s;
+	-webkit-transition-duration: 0.5s;
+	-webkit-transition-timing-function: ease;
+	
+	height: 44px;
+	width: 100%;
+	background-image: -webkit-gradient(
+			linear, 
+			0% 0%, 
+			0% 100%, 
+			from(#aaaaaa), 
+			to(#aaaaaa), 
+			color-stop(.5,#cccccc)
+		);
+}
+nav ul {
+	height: 100%;
+	width: 320px;
+	margin-left: auto;
+	margin-right: auto;
+}
+nav ul li {
+	display: inline-block;
+	float: left;
+	width: 64px;
+	height: 100%;
+	border: 1px solid #999999;
+	-webkit-box-sizing: border-box;
+	
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+nav ul li:nth-child(1n+2) {
+	border-left-width: 0px;
+}
+
+#liHome a,
+#liMentions a,
+#liFaves a,
+#liMessages a,
+#liSearch a {
+	display: block;
+	width: 64px;
+	height: 100%;
+}
+#liHome {
+	background-image: url('../../../shared/images/icons/icons/53-house.png');
+}
+#liHome.selected {
+	background-image: url('../../../shared/images/icons/icons/53-house.png'),
+		-webkit-gradient(
+				linear, 
+				0% 0%, 
+				0% 100%, 
+				from(#dddddd), 
+				to(#dddddd), 
+				color-stop(.5,#cccccc)
+			);
+}
+#liMentions {
+	background-image: url('../../../shared/images/icons/icons/09-chat2.png');
+}
+#liMentions.selected {
+	background-image: url('../../../shared/images/icons/icons/09-chat2.png'),
+		-webkit-gradient(
+				linear, 
+				0% 0%, 
+				0% 100%, 
+				from(#dddddd), 
+				to(#dddddd), 
+				color-stop(.5,#cccccc)
+			);
+}
+#liFaves {
+	background-image: url('../../../shared/images/icons/icons/28-star.png');
+}
+#liFaves.selected {
+	background-image: url('../../../shared/images/icons/icons/28-star.png'),
+		-webkit-gradient(
+				linear, 
+				0% 0%, 
+				0% 100%, 
+				from(#dddddd), 
+				to(#dddddd), 
+				color-stop(.5,#cccccc)
+			);
+}
+#liMessages {
+	background-image: url('../../../shared/images/icons/icons/08-chat.png');
+}
+#liMessages.selected {
+	background-image: url('../../../shared/images/icons/icons/08-chat.png'),
+		-webkit-gradient(
+				linear, 
+				0% 0%, 
+				0% 100%, 
+				from(#dddddd), 
+				to(#dddddd), 
+				color-stop(.5,#cccccc)
+			);
+}
+#liSearch {
+	background-image: url('../../../shared/images/icons/icons/06-magnifying-glass.png');
+}
+#liSearch.selected {
+	background-image: url('../../../shared/images/icons/icons/06-magnifying-glass.png'),
+		-webkit-gradient(
+				linear, 
+				0% 0%, 
+				0% 100%, 
+				from(#dddddd), 
+				to(#dddddd), 
+				color-stop(.5,#cccccc)
+			);
+}
+
+/*
+	Section Animations
+*/
+section {
+	-webkit-transition-property: opacity;
+	-webkit-transition-duration: 0.5s;
+	-webkit-transition-timing-function: ease;
+	
+	z-index: 0;
+	position: absolute;
+	top: 88px;
+	width: 100%;
+	background-color: #ffffff;
+	display: block;
+	opacity: 0;
+}
+section.selected {
+	z-index: 100;
+	opacity: 1;
+}
+
+/*
+	List
+*/
+section#home ul.tweets li {
+	min-height: 56px;
+	min-width: 320px;
+	-webkit-box-sizing: border-box;
+	padding: 4px;
+}
+section#home ul.tweets li img.user-image {
+	width: 48px;
+	height: 48px;
+}
+section#home ul.tweets li:nth-child(even) {
+	background-image:  -webkit-gradient(
+		linear, 
+		0% 0%, 
+		0% 100%, 
+		from(#aaaaaa), 
+		to(#aaaaaa), 
+		color-stop(.5,#cccccc)
+	);
+}
+
+section#home ul.tweets li img {
+	float: left;
+	padding-right: 5px;
+}
+section#home ul.tweets li span.username {
+	display: block;
+}
+
+/*
+Profile
+*/
+section#profile {
+	-webkit-box-sizing: border-box;
+	padding: 4px;
+	background-color: #ffffff;
+	
+/*	font-size: 9pt;*/
+}
+section#profile img {
+	
+}
+section#profile span {
+	display: block;
+	padding-left: 60px;
+}
+
+section#profile #profileImage {
+	float: left;
+}
+
+section#profile #statusText,
+section#profile #followersCount {
+	padding-top: 5px;
+}

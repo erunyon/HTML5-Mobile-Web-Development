@@ -1,0 +1,12 @@
+nav,
+section {
+	display: none;
+}
+
+section#map {
+	z-index: 999;
+	display: block !important;
+	opacity: 1;
+	top: 44px;
+	height: 100%;
+}

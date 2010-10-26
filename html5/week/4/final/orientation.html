@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Orientation Test</title>
+		<script type="text/javascript" charset="utf-8">
+			function setOrientationString() {
+				var displayStr = "Orientation : ";
+				
+				switch(window.orientation)
+                {
+                    case 0:
+                        displayStr += "Portrait";
+                    	break;
+                    case -90:
+                        displayStr += "Landscape (right, screen turned clockwise)";
+                    	break;
+                    case 90:
+                        displayStr += "Landscape (left, screen turned counterclockwise)";
+                    	break;
+                    case 180:
+                        displayStr += "Portrait (upside-down portrait)";
+                    	break;
+                }
+
+                document.getElementById("main").innerHTML = displayStr;
+			}
+			function pageLoaded() {
+				var supportsOrientationChange = "onorientationchange" in window;
+				var orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+				
+				alert(orientationEvent);
+				
+				window.addEventListener(orientationEvent, function() {
+					setOrientationString();
+				},
+				false);
+				
+				setOrientationString();
+			}
+		</script>
+	</head>
+	<body onload='pageLoaded()'>
+		<div id="main">
+		</div>
+	</body>
+</html>
