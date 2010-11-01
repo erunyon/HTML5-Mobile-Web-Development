@@ -107,7 +107,7 @@ function orientationChanged() {
 		});
 		header.innerText = 'Map View';
 	} else {
-		getTweets();
+		//getTweets();
 		header.innerText = 'Tweetstr';
 	}
 }
@@ -130,7 +130,7 @@ function loadLocalTweets(position) {
 		for (var resultId in json.results) {
       var result = json.results[resultId],
 					m = re.exec(result.location);
-
+			
 			if ((m) && (m.length > 0)) {
 				var latLng = m[0].split(',');
 				var location = new google.maps.LatLng(latLng[0], latLng[1]);
