@@ -1,6 +1,6 @@
-body {font-family:"Helvetica";}
+body {width:100%; height:100%; font-family:"Helvetica";}
 ul {list-style-type:none;}
-/* @font-face {font-family:Chunk; src:url('../../../shared/fonts/chunk/Chunk.otf') format('opentype');} */
+
 @font-face {
 	font-family:'ChunkFiveRegular';
 	src:url('chunk-webfont.eot');
@@ -8,12 +8,16 @@ ul {list-style-type:none;}
 	font-weight:normal;
 	font-style:normal;
 }
+
 /*
 	Header
 */
-header {
-	width:100%;
-	height:44px;
+header {width:100%; height:44px; padding-top:10px;
+	-webkit-box-sizing:border-box;
+	text-align:center;
+	color:#fff;
+	font-family:'ChunkFiveRegular', Helvetica;
+	font-weight:bold; font-size:1.5em;
 	background-image:-webkit-gradient(
 		linear, 
 		0% 0%, 
@@ -22,13 +26,6 @@ header {
 		to(#666), 
 		color-stop(.5,#333)
 	);
-	font-family:'ChunkFiveRegular', Helvetica;
-	-webkit-box-sizing:border-box;
-	text-align:center;
-	color:#fff;
-	padding-top:10px;
-	font-weight:bold;
-	font-size:1.5em;
 }
 
 /* 
@@ -47,12 +44,7 @@ nav {
 			color-stop(.5,#ccc)
 		);
 }
-nav ul {
-	height:100%;
-	width:320px;
-	margin:0 auto;
-	list-style:none;
-}
+nav ul {height:100%; width:320px; margin:0 auto; list-style:none;}
 nav ul li {display:inline-block; float:left; -webkit-box-sizing:border-box;}
 nav ul li.selected {
 	background-image:-webkit-gradient(
