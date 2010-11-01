@@ -119,42 +119,31 @@ function loadMap(position) {
 		zoom: 8,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
-	console.log(myOptions);
 	map = new google.maps.Map(document.getElementById('mapCanvas'), myOptions);
 	
 	loadLocalTweets(position);
 }
 
 function loadLocalTweets(position) {
-	var client = new XMLHttpRequest();
-	client.onreadystatechange = function() {
-		if (this.readyState == this.DONE && this.status == 200) {
-			var response = eval('(' + this.responseText + ')');
-			var re = new RegExp('-?\\d+\\.\\d+\\,-?\\d+\\.\\d+');
-			
-			for (var resultId in response.results) {
-				var result = response.results[resultId];
-				
-				var m = re.exec(result.location);
-				if ((m) && (m.length > 0)) {
-					var latLng = m[0].split(',');
-					var location = new google.maps.LatLng(latLng[0], latLng[1]);
-					try {
-						var mark = new google.maps.Marker({
-							position: location,
-							map: map
-						});
-					}
-					catch (ex) {
-						console.log(ex);
-					}
+  $.getJSON("http://search.twitter.com/search.json?rpp=100&geocode=' + position.coords.latitude + ',' + position.coords.longitude + ',25mi&callback=?", function(json){
+    var re = new RegExp('-?\\d+\\.\\d+\\,-?\\d+\\.\\d+');
+		for (var resultId in json.results) {
+      var result = json.results[resultId],
+					m = re.exec(result.location);
+
+			if ((m) && (m.length > 0)) {
+				var latLng = m[0].split(',');
+				var location = new google.maps.LatLng(latLng[0], latLng[1]);
+				try {
+					var mark = new google.maps.Marker({
+						position: location,
+						map: map
+					});
+				}
+				catch (ex) {
+					console.log(ex);
 				}
 			}
-		}
-	};
-	var apiCall = 'http://search.twitter.com/search.json?rpp=100&geocode=' + position.coords.latitude + ',' + position.coords.longitude + ',25mi';
-	var requestString = '../../../shared/scripts/curl.php?apiCall=' + escape(apiCall);
-	
-	client.open('GET', requestString, true);
-	client.send();				
+    }
+  });
 }
