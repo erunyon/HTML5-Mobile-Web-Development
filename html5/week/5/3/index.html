@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<!-- TODO: Add manifest attribute. -->
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Content-Language" content="en"/>
+		
+		<meta name="viewport" content="width=device-width, user-scalable=no" />
+		
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		
+		<title>Tweetstr</title>
+		
+		<link rel="apple-touch-icon" href="../../../shared/images/tweetstr-icon.png"/>
+		
+		<link rel="stylesheet" href="html5reset.css" type="text/css" media="screen" charset="utf-8" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8">
+		<link rel="stylesheet" media="screen and (orientation:landscape)" 
+							   href="ipad-landscape.css">
+		
+		<script src='script.js' type="text/javascript" charset="utf-8"></script>
+		
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+		<script type="text/javascript">
+			var map;
+			var db;
+			
+			function pageLoaded() {
+				prepDB();
+				addEventListeners();
+				orientationChanged();
+			}
+			
+			function prepDB() {
+				if (window.openDatabase) {
+					try {
+						db = openDatabase('tweetstr',											// Name
+						 				  '1.0',												// Version
+										  'A place to store our tweets for offline viewing',	// Description
+										  5 * 1024 * 1024);										// Size (5MB)
+						if (db) {
+							db.transaction(function(tx) {
+								tx.executeSql('CREATE TABLE IF NOT EXISTS tweets \
+												(tweetId TEXT PRIMARY KEY,\
+												 username TEXT,\
+												 text TEXT,\
+												 userImageURL TEXT,\
+												 createdAt TEXT)');
+							});
+						}
+					}
+					catch (e) {
+						console.log(e);
+					}
+					
+				}
+			}
+			
+			function getTweets() {
+				var client = new XMLHttpRequest();
+				client.onreadystatechange = function() {
+					if (this.readyState == this.DONE && this.status == 200) {
+						// So far so good.
+						var tweetsList = document.getElementById('tweetsList');
+						var response = eval('(' + this.responseText + ')');
+						for (var resultId in response.results) {
+							var result = response.results[resultId];
+							// Get info we'll use.
+							var id = result.id.toString();
+							var name = result.from_user;
+							var text = result.text;
+							var imageUrl = result.profile_image_url;
+
+							cacheTweetIfUnique(id, name, imageUrl, text);
+						}
+
+						// Now that we're done cacheing the tweets, lets load them.
+						loadCachedTweets();
+					}
+				};
+				var apiCall = 'http://search.twitter.com/search.json?q=OReillyMedia';
+				var requestString = '../../../shared/scripts/curl.php?apiCall=' + escape(apiCall);
+
+				client.open('GET', requestString, true);
+				client.send();
+			}
+			
+			function cacheTweetIfUnique(id, username, userImageURL, text) {
+				if (db) {
+					db.transaction(function(tx) {
+						var sql = 'SELECT COUNT(tweetId) AS c FROM tweets WHERE tweetId = "' + id + '"';
+						// var sql = 'SELECT * FROM tweets';
+						tx.executeSql(sql, [], function(tx, results) {
+							if (results.rows.item(0).c == 0) {
+								// This tweet has not been cached. Cache it yo!!!
+								var nowString = stringFromDate(new Date());
+								tx.executeSql('INSERT INTO tweets ("tweetId", username, text, userImageURL, createdAt) values (?, ?, ?, ?, ?)',
+									[id,
+									username,
+									text,
+									userImageURL,
+									nowString]);
+							}
+						});
+					});
+				}
+				else {
+					console.log('Error caching tweet.');
+				}
+			}
+			
+			function loadCachedTweets() {
+				if (db) {
+					db.transaction(function(tx) {
+						tx.executeSql('SELECT * FROM tweets ORDER BY tweetId DESC', [], function(tx, results) {
+							var len = results.rows.length;
+							if (len > 0) {
+								// We are ready to start loading the cached tweets.
+								// First let's clear out the tweets list so we don't 
+								// get duplicates.
+								var tweetsList = document.getElementById('tweetsList');
+								tweetsList.innerHTML = '';
+								
+								// Add results to list.
+								for (var i = 0; i < len; i++) {
+									// addTweetToList(username, userImageURL, text)
+									var tweet = results.rows.item(i);
+									addTweetToList(tweet.username, tweet.userImageURL, tweet.text);
+								}
+							}
+						});
+					});
+				}
+				else {
+					console.log('Error loading cached tweets.')
+				}
+			}
+			
+			function addTweetToList(username, userImageURL, text) {
+				// Create Image Element
+				var imageElement = document.createElement('img');
+				imageElement.setAttribute('src', userImageURL);
+				imageElement.setAttribute('alt', username)
+				imageElement.setAttribute('class', 'user-image');
+				imageElement.setAttribute('onClick', "showProfile('" + username + "')");
+
+				// Create username span
+				var usernameSpan = document.createElement('span');
+				usernameSpan.setAttribute('class', 'username');
+				usernameSpan.innerText = username;
+
+				// Create message span
+				var messageSpan = document.createElement('span');
+				messageSpan.setAttribute('class', 'message');
+				messageSpan.innerText = text;
+
+				// Create container div
+				var div = document.createElement('div');
+				div.appendChild(imageElement);
+				div.appendChild(usernameSpan);
+				div.appendChild(messageSpan);
+
+				// Create List Item
+				var li = document.createElement('li');
+				li.appendChild(div);
+
+				// Add List Item to List
+				var tweetsList = document.getElementById('tweetsList');
+				tweetsList.appendChild(li);
+			}
+		</script>
+	</head>
+	<body onload='pageLoaded()'>
+		<header>
+			Tweetstr
+		</header>
+		<nav>
+			<ul id='navList'>
+				<li id='liHome' onclick='navSelected()' class='selected' ></li>
+				<li id='liMentions' onclick='navSelected()'></li>
+				<li id='liFaves' onclick='navSelected()'></li>
+				<li id='liMessages' onclick='navSelected()'></li>
+				<li id='liSearch' onclick='navSelected()'></li>
+			</ul>
+		</nav>
+		<section id='home' class='selected'>
+			<ul id='tweetsList' class='tweets'>
+			</ul>
+		</section>
+		<section id='profile' class=''>
+			<img id='profileImage' />
+			<span id='name'></span>
+			<span id='screenName'></span>
+			<span id='location'></span>
+			<span id='statusText'></span>
+			<span id='followersCount'></span>
+			<span id='friendsCount'></span>
+		</section>
+		<section id='map' class=''>
+			<div id='mapCanvas' style='width: 100%; height: 100%;'>Add map here!</div>
+		</section>
+	</body>
+</html>
