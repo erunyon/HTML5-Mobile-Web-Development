@@ -199,11 +199,8 @@ function orientationChanged() {
 		});
 		header.innerText = 'Map View';
 	} else {
-		// getTweets();
-		// header.innerText = 'Tweetstr';
-		navigator.geolocation.getCurrentPosition(loadMap, function(error) {
-			console.log(error.message);
-		});
+		getTweets();
+		header.innerText = 'Tweetstr';
 	}
 }
 
