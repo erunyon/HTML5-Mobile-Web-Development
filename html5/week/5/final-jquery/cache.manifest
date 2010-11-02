@@ -1,0 +1,17 @@
+CACHE MANIFEST
+
+#version 0.1
+
+index.html
+html5reset.css
+style.css
+script.js
+ipad-landscape.css
+../../../shared/images/icons/icons/53-house.png
+../../../shared/images/icons/icons/09-chat2.png
+../../../shared/images/icons/icons/28-star.png
+../../../shared/images/icons/icons/08-chat.png
+../../../shared/images/icons/icons/06-magnifying-glass.png
+
+NETWORK:
+../../../shared/scripts/curl.php
