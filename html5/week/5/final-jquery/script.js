@@ -1,5 +1,5 @@
-var map = null;
-var db;
+var map = null,
+		db;
 
 jQuery(function($){
   getTweets();
@@ -9,20 +9,16 @@ jQuery(function($){
   
   $nav.find('li').first().addClass('selected');
   $nav.find('a').live('click', function(e){
+    e.preventDefault();
     $(this).parent().addClass('selected').siblings().removeClass('selected');
     navSelected(e);
-    
-    e.preventDefault();
-    e.stopPropagation();
   });
   
   $('#tweetsList li img').live('click', function(e){
+    e.preventDefault();
     var name = $(this).parent()[0].getAttribute('data-tweeter');
     $nav.find('li').removeClass('selected');
     getProfileForScreenName(name);
-    
-    e.preventDefault();
-    e.stopPropagation();
   });
 
 	window.scrollTo(0,1);
@@ -104,17 +100,17 @@ function prepDB() {
 	if (window.openDatabase) {
 		try {
 			db = openDatabase('tweetstr', // Name
-			 				  '1.0', // Version
-							  'A place to store our tweets for offline viewing', // Description
-							  5 * 1024 * 1024); // Size (5MB)
+				'1.0', // Version
+			  'A place to store our tweets for offline viewing', // Description
+			  5 * 1024 * 1024); // Size (5MB)
 			if (db) {
 				db.transaction(function(tx) {
 					tx.executeSql('CREATE TABLE IF NOT EXISTS tweets \
-									(tweetId TEXT PRIMARY KEY,\
-									 username TEXT,\
-									 text TEXT,\
-									 userImageURL TEXT,\
-									 createdAt TEXT)');
+						(tweetId TEXT PRIMARY KEY,\
+						 username TEXT,\
+						 text TEXT,\
+						 userImageURL TEXT,\
+						 createdAt TEXT)');
 				});
 			}
 		}
@@ -176,8 +172,8 @@ function loadCachedTweets() {
 
 function addEventListeners() {
 	// Orientation Detection
-	var supportsOrientationChange = "onorientationchange" in window;
-	var orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+	var supportsOrientationChange = "onorientationchange" in window,
+			orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
 
 	window.addEventListener(orientationEvent, orientationChanged, false);
 }
@@ -198,9 +194,9 @@ function orientationChanged() {
 function loadMap(position) {
 	var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 	var myOptions = {
-		center: latLng,
-		zoom: 10,
-		mapTypeId: google.maps.MapTypeId.ROADMAP
+			center: latLng,
+			zoom: 10,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 	map = new google.maps.Map(document.getElementById('mapCanvas'), myOptions);
 	
