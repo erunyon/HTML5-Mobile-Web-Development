@@ -156,17 +156,15 @@ function loadCachedTweets() {
 				var len = results.rows.length;
 				if (len > 0) {
 					// We are ready to start loading the cached tweets.
-					// First let's clear out the tweets list so we don't 
-					// get duplicates.
-					var tweetsList = document.getElementById('tweetsList');
-					tweetsList.innerHTML = '';
+					var $tweetsList = $('#tweetsList'),
+							tweets_list_content = '';
 					
 					// Add results to list.
 					for (var i = 0; i < len; i++) {
-						// addTweetToList(username, userImageURL, text)
 						var tweet = results.rows.item(i);
-						addTweetToList(tweet.username, tweet.userImageURL, tweet.text);
+						tweets_list_content += '<li data-tweeter="'+tweet.username+'"><img src="'+tweet.userImageURL+'" alt="'+tweet.username+'" class="user-image"><h3 class="username">'+tweet.username+'</h3><div class="message">'+tweet.text+'</div></li>';
 					}
+					$tweetsList.html(tweets_list_content);
 				}
 			});
 		});
@@ -174,13 +172,6 @@ function loadCachedTweets() {
 	else {
 		console.log('Error loading cached tweets.')
 	}
-}
-
-function addTweetToList(username, userImageURL, text) {
-	// Add List Item to List
-	var tweetsList = $('#tweetsList');
-	tweetsList.append('<li data-tweeter="'+username+'"><img src="'+userImageURL+'" alt="'+username+'" class="user-image"><h3 class="username">'+username+'</h3><div class="message">'+text+'</div></li>');
-	
 }
 
 function addEventListeners() {
