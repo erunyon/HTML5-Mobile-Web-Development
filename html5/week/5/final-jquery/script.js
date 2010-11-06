@@ -242,17 +242,14 @@ function loadLocalTweets(position) {
 function stringFromDate(date) {
 	// Store createdAt like
 	// 2010-11-2 03:00:00
-	var fullYear =  date.getFullYear().toString();
-	var month = date.getMonth() < 10 ? '0' + date.getMonth().toString() : date.getMonth().toString();
-	var day = date.getDate() < 10 ? '0' + date.getDate().toString() : date.getDate().toString();
-	var hours = date.getHours() < 10 ? '0' + date.getHours().toString() : date.getHours().toString();
-	var minutes = date.getMinutes() < 10 ? '0' + date.getMinutes().toString() : date.getMinutes().toString();
-	var seconds = date.getSeconds() < 10 ? '0' + date.getSeconds().toString() : date.getSeconds().toString();
-	
-	var dateArray = [fullYear, month, day];
-	var timeArray = [hours, minutes, seconds];
-	
-	var dateString = dateArray.join('-') + ' ' + timeArray.join(':');
-	
-	return dateString;
+	var fullYear =  date.getFullYear().toString(),
+			month = date.getMonth() < 10 ? '0' + date.getMonth().toString() : date.getMonth().toString(),
+			day = date.getDate() < 10 ? '0' + date.getDate().toString() : date.getDate().toString(),
+			hours = date.getHours() < 10 ? '0' + date.getHours().toString() : date.getHours().toString(),
+			minutes = date.getMinutes() < 10 ? '0' + date.getMinutes().toString() : date.getMinutes().toString(),
+			seconds = date.getSeconds() < 10 ? '0' + date.getSeconds().toString() : date.getSeconds().toString(),
+			dateArray = [fullYear, month, day],
+			timeArray = [hours, minutes, seconds];
+			
+	return dateArray.join('-') + ' ' + timeArray.join(':');
 }
