@@ -206,17 +206,33 @@ function loadMap(position) {
 function loadLocalTweets(position) {
   $.getJSON('http://search.twitter.com/search.json?rpp=100&geocode=' + position.coords.latitude + ',' + position.coords.longitude + ',25mi&callback=?', function(json){
     var re = new RegExp('-?\\d+\\.\\d+\\,-?\\d+\\.\\d+');
+		var infowindow = new google.maps.InfoWindow();
+		
 		for (var resultId in json.results) {
       var result = json.results[resultId],
-					m = re.exec(result.location);
+					m = re.exec(result.location),
+					id = result.id.toString(),
+          name = result.from_user,
+          text = result.text,
+          imageUrl = result.profile_image_url;
+
 			if ((m) && (m.length > 0)) {
-				var latLng = m[0].split(',');
-				var location = new google.maps.LatLng(latLng[0], latLng[1]);
+				var latLng = m[0].split(','),
+						location = new google.maps.LatLng(latLng[0], latLng[1]);
 				try {
-					var mark = new google.maps.Marker({
+					var marker = new google.maps.Marker({
 						position: location,
-						map: map
+						map: map,
+						title:name,
+						text:text
 					});
+
+					google.maps.event.addListener(marker, 'click', (function(marker, location, map) { return function() {
+						infowindow.setContent('<h2>'+marker.title+'</h2><p>'+marker.text+'</p>');
+						infowindow.setPosition(location);
+						infowindow.open(map, marker);
+					}})(marker, location, map));
+					
 				}
 				catch (ex) {
 					console.log(ex);
