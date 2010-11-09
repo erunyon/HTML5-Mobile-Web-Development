@@ -40,10 +40,10 @@
 			function prepDB() {
 				if (window.openDatabase) {
 					try {
-						db = openDatabase('addressbook',											// Name
-						 				  '1.0',												// Version
-										  'A place to store contacts',							// Description
-										  5 * 1024 * 1024);										// Size (5MB)
+						db = openDatabase('addressbook', // Name
+						 				  '1.0', // Version
+										  'A place to store contacts', // Description
+										  5 * 1024 * 1024); // Size (5MB)
 						if (db) {
 							db.transaction(function(tx) {
 								tx.executeSql('CREATE TABLE IF NOT EXISTS contacts \
@@ -67,12 +67,10 @@
 			
 			function showContactForm() {
 				// Hide List
-				var list = document.getElementById('list');
-				list.setAttribute('class', '');
+				$('#list').removeClass();
 				
 				// Select Contact Form
-				var contactForm = document.getElementById('contactForm');
-				contactForm.setAttribute('class', 'selected');
+				$('#contactForm').addClass('selected');
 				
 				document.cf.reset();
 			}
@@ -96,8 +94,7 @@
 			}
 			
 			function clearList() {
-				var contactsList = document.getElementById('contactsList');
-				contactsList.innerHTML = '';
+				$('#contactsList').html('');
 			}
 			
 			function loadContacts() {
@@ -142,7 +139,7 @@
 				
 				var header = document.createElement('header');
 				header.addEventListener("click", function() {
-					toggleDetails("c" + contactId);
+					$('#c'+contactId).toggleClass('selected');
 				}, false);
 				header.appendChild(img);
 				header.appendChild(fullNameSpan);
@@ -224,12 +221,10 @@
 				}
 				
 				// Show List
-				var list = document.getElementById('list');
-				list.setAttribute('class', 'selected');
+				$('#list').addClass('selected');
 				
 				// Hide Contact Form
-				var contactForm = document.getElementById('contactForm');
-				contactForm.setAttribute('class', '');
+				$('#contactForm').removeClass();
 				
 				loadContacts();
 			}
@@ -259,17 +254,6 @@
 				for (var index in contacts) {
 					var contact = contacts[0];
 					contact.className = 'contact';
-				}
-			}
-			
-			function toggleDetails(contactId) {
-				var contact = document.getElementById(contactId);
-				if (contact.className == 'contact selected') {
-					contact.className = 'contact';
-				}
-				else {
-					hideAllDetails();
-					contact.className = 'contact selected';
 				}
 			}
 			
@@ -304,9 +288,7 @@
 		</script>
 	</head>
 	<body>
-		<header id='pageHeader'>
-			Contacts
-		</header>
+		<header id='pageHeader'>Contacts</header>
 		<section id='list' class='selected'>
 			<div id='toolbar'>
 				<ul id='tools'>
