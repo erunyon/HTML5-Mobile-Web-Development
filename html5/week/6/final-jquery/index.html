@@ -1,358 +1,351 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta http-equiv="Content-Language" content="en"/>
-		<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no" />
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<title>Address Book</title>
-		<link rel="stylesheet" href="html5reset.css" type="text/css" media="screen" charset="utf-8" />
-		<link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8">
-	  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js" type="text/javascript"></script>
-		<script type="text/javascript">
-			var db = null;
-			
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Language" content="en"/>
+    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>Address Book</title>
+    <link rel="stylesheet" href="html5reset.css" type="text/css" media="screen" charset="utf-8" />
+    <link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      var db = null;
+      
       jQuery(function($){
-				addEventListeners();
-				prepDB();
-				loadContacts();
+        addEventListeners();
+        prepDB();
+        loadContacts();
       });
 
-			function addEventListeners() {
-				// Search
-				var searchForm = document.forms['sf'];
-				searchForm.addEventListener("submit", searchFormSubmitted, false);
-				
-				// Show Add Contact
-				var addContactItem = document.getElementById('addContactItem');
-				addContactItem.addEventListener("click", showContactForm, false);
-				
-				// Add Contact
-				var contactForm = document.forms['cf'];
-				contactForm.addEventListener("submit", addContact, false);
-				
-				// Cancel Button
-				var cancelButton = document.getElementById('cancelButton');
-				cancelButton.addEventListener('click', showList, false);
-			}
+      function addEventListeners() {
+        // Search
+        $('#sf').submit(function(){
+          searchFormSubmitted();
+        });
+        
+        // Show Add Contact
+        $('#addContactItem').click(function(){
+          $('#list').removeClass(); // Hide List
+          $('#contactForm').addClass('selected'); // Select Contact Form
+          document.cf.reset();
+        });
+        
+        // Add Contact
+        $('#cf').submit(function(){
+          addContact();
+        });
+        
+        // Cancel Button
+        $('#cancelButton').click(function(){
+          showList();
+        });
+      }
 
-			function prepDB() {
-				if (window.openDatabase) {
-					try {
-						db = openDatabase('addressbook', // Name
-						 				  '1.0', // Version
-										  'A place to store contacts', // Description
-										  5 * 1024 * 1024); // Size (5MB)
-						if (db) {
-							db.transaction(function(tx) {
-								tx.executeSql('CREATE TABLE IF NOT EXISTS contacts \
-												(contactId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\
-												 fullName TEXT,\
-												 twitterUserName TEXT,\
-												 twitterImagePath TEXT,\
-												 phoneNumber TEXT,\
-												 age TEXT,\
-												 email TEXT,\
-												 url TEXT)');
-							});
-						}
-					}
-					catch (e) {
-						console.log(e);
-					}
-					
-				}
-			}
-			
-			function showContactForm() {
-				// Hide List
-				$('#list').removeClass();
-				
-				// Select Contact Form
-				$('#contactForm').addClass('selected');
-				
-				document.cf.reset();
-			}
+      function prepDB() {
+        if (window.openDatabase) {
+          try {
+            db = openDatabase('addressbook', // Name
+                       '1.0', // Version
+                      'A place to store contacts', // Description
+                      5 * 1024 * 1024); // Size (5MB)
+            if (db) {
+              db.transaction(function(tx) {
+                tx.executeSql('CREATE TABLE IF NOT EXISTS contacts \
+                        (contactId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\
+                         fullName TEXT,\
+                         twitterUserName TEXT,\
+                         twitterImagePath TEXT,\
+                         phoneNumber TEXT,\
+                         age TEXT,\
+                         email TEXT,\
+                         url TEXT)');
+              });
+            }
+          }
+          catch (e) {
+            console.log(e);
+          }
+          
+        }
+      }
+      
+      function searchFormSubmitted(event) {
+        event.preventDefault();
+        
+        clearList();
+        
+        // Start Animation.
+        var spinner = document.getElementById('spinner');
+        spinner.addEventListener('webkitAnimationEnd', spinnerAnimationEnded, false);
+        spinner.setAttribute('class', 'spin');
 
-			function searchFormSubmitted(event) {
-				event.preventDefault();
-				
-				clearList();
-				
-				// Start Animation.
-				var spinner = document.getElementById('spinner');
-				spinner.addEventListener('webkitAnimationEnd', spinnerAnimationEnded, false);
-				spinner.setAttribute('class', 'spin');
+        return false;
+      }
+      
+      function spinnerAnimationEnded(event) {
+        event.target.setAttribute('class', '');
+        findContact();
+      }
+      
+      function clearList() {
+        $('#contactsList').html('');
+      }
+      
+      function loadContacts() {
+        clearList();
+        
+        if (db) {
+          db.transaction(function(tx) {
+            tx.executeSql('SELECT * FROM contacts ORDER BY fullName ASC', [], function(tx, results) {
+              var len = results.rows.length;
+              if (len > 0) {
+                // Add results to list.
+                for (var i = 0; i < len; i++) {
+                  // addTweetToList(username, userImageURL, text)
+                  var contact = results.rows.item(i);
+                  addRowToList(
+                    contact.contactId,
+                    contact.fullName, 
+                    contact.twitterUserName,
+                    contact.twitterImagePath,
+                    contact.phoneNumber,
+                    contact.age,
+                    contact.email,
+                    contact.url);
+                }
+              }
+            });
+          });
+        }
+        else {
+          console.log('Error loading contacts.')
+        }
+      }
+      
+      function addRowToList(contactId, fullName, twitterUserName, twitterImagePath, phoneNumber, age, email, url) {
+        var img = document.createElement('img');
+        img.setAttribute('src', twitterImagePath);
+        img.setAttribute('alt', twitterUserName);
+        
+        var fullNameSpan = document.createElement('span');
+        fullNameSpan.setAttribute('class', 'fullName');
+        fullNameSpan.innerText = fullName;
+        
+        var header = document.createElement('header');
+        header.addEventListener("click", function() {
+          $('#c'+contactId).toggleClass('selected');
+        }, false);
+        header.appendChild(img);
+        header.appendChild(fullNameSpan);
+        
+        var twitterUserNameSpan = document.createElement('span');
+        twitterUserNameSpan.innerText = 'Twitter: ' + twitterUserName;
+        
+        var phoneNumberSpan = document.createElement('span');
+        phoneNumberSpan.innerText = 'Phone Number: ' + phoneNumber;
+        
+        var ageSpan = document.createElement('span');
+        ageSpan.innerText = 'Age: ' + age;
+        
+        var emailSpan = document.createElement('span');
+        emailSpan.innerText = 'Email: ' + email;
+        
+        var urlSpan = document.createElement('span');
+        urlSpan.innerText = 'URL: ' + url;
+        
+        var div = document.createElement('div');
+        div.setAttribute('class', 'details');
+        div.appendChild(twitterUserNameSpan);
+        div.appendChild(phoneNumberSpan);
+        div.appendChild(ageSpan);
+        div.appendChild(emailSpan);
+        div.appendChild(urlSpan);
+        
+        var li = document.createElement('li');
+        li.setAttribute('id', 'c' + contactId);
+        li.setAttribute('class', 'contact');
+        li.appendChild(header);
+        li.appendChild(div);
+        
+        var contactsList = document.getElementById('contactsList');
+        contactsList.appendChild(li);
+      }
+      
+      function addContact(event) {
+        event.preventDefault();
+        document.activeElement.blur();
+        
+        if (("checkValidity" in document.cf) &&
+          (document.cf.checkValidity() == false)) {
+          console.log("Form is NOT valid!");
+          return;
+        }
+        
+        var fullName = $('#fullName').val(),
+            twitterUserName = $('#twitterUserName').val(),
+            twitterImagePath = null,
+            phoneNumber = $('#phoneNumber').val(),
+            age = $('#age').val(),
+            email = $('#email').val(),
+            url = $('#url').val();
 
-				return false;
-			}
-			
-			function spinnerAnimationEnded(event) {
-				event.target.setAttribute('class', '');
-				findContact();
-			}
-			
-			function clearList() {
-				$('#contactsList').html('');
-			}
-			
-			function loadContacts() {
-				clearList();
-				
-				if (db) {
-					db.transaction(function(tx) {
-						tx.executeSql('SELECT * FROM contacts ORDER BY fullName ASC', [], function(tx, results) {
-							var len = results.rows.length;
-							if (len > 0) {
-								// Add results to list.
-								for (var i = 0; i < len; i++) {
-									// addTweetToList(username, userImageURL, text)
-									var contact = results.rows.item(i);
-									addRowToList(
-										contact.contactId,
-										contact.fullName, 
-										contact.twitterUserName,
-										contact.twitterImagePath,
-										contact.phoneNumber,
-										contact.age,
-										contact.email,
-										contact.url);
-								}
-							}
-						});
-					});
-				}
-				else {
-					console.log('Error loading contacts.')
-				}
-			}
-			
-			function addRowToList(contactId, fullName, twitterUserName, twitterImagePath, phoneNumber, age, email, url) {
-				var img = document.createElement('img');
-				img.setAttribute('src', twitterImagePath);
-				img.setAttribute('alt', twitterUserName);
-				
-				var fullNameSpan = document.createElement('span');
-				fullNameSpan.setAttribute('class', 'fullName');
-				fullNameSpan.innerText = fullName;
-				
-				var header = document.createElement('header');
-				header.addEventListener("click", function() {
-					$('#c'+contactId).toggleClass('selected');
-				}, false);
-				header.appendChild(img);
-				header.appendChild(fullNameSpan);
-				
-				var twitterUserNameSpan = document.createElement('span');
-				twitterUserNameSpan.innerText = 'Twitter: ' + twitterUserName;
-				
-				var phoneNumberSpan = document.createElement('span');
-				phoneNumberSpan.innerText = 'Phone Number: ' + phoneNumber;
-				
-				var ageSpan = document.createElement('span');
-				ageSpan.innerText = 'Age: ' + age;
-				
-				var emailSpan = document.createElement('span');
-				emailSpan.innerText = 'Email: ' + email;
-				
-				var urlSpan = document.createElement('span');
-				urlSpan.innerText = 'URL: ' + url;
-				
-				var div = document.createElement('div');
-				div.setAttribute('class', 'details');
-				div.appendChild(twitterUserNameSpan);
-				div.appendChild(phoneNumberSpan);
-				div.appendChild(ageSpan);
-				div.appendChild(emailSpan);
-				div.appendChild(urlSpan);
-				
-				var li = document.createElement('li');
-				li.setAttribute('id', 'c' + contactId);
-				li.setAttribute('class', 'contact');
-				li.appendChild(header);
-				li.appendChild(div);
-				
-				var contactsList = document.getElementById('contactsList');
-				contactsList.appendChild(li);
-			}
-			
-			function addContact(event) {
-				event.preventDefault();
-				document.activeElement.blur();
-				
-				if (("checkValidity" in document.cf) &&
-					(document.cf.checkValidity() == false)) {
-					console.log("Form is NOT valid!");
-					return;
-				}
-				
-				var fullName = document.getElementById('fullName').value;
-				var twitterUserName = document.getElementById('twitterUserName').value;
-				var twitterImagePath = null;
-				var phoneNumber = document.getElementById('phoneNumber').value;
-				var age = document.getElementById('age').value;
-				var email = document.getElementById('email').value;
-				var url = document.getElementById('url').value;
+        var client = new XMLHttpRequest();
+        client.onreadystatechange = function() {
+          if (this.readyState == XMLHttpRequest.prototype.DONE && this.status == 200) {
+            var profile = eval('(' + this.responseText + ')');
+            
+            // Get HTML Elements.
+            twitterImagePath = profile.profile_image_url;
+            
+            insertContactInDB(fullName, twitterUserName, twitterImagePath, phoneNumber, age, email, url);
+          }
+        };
+        var apiCall = 'http://api.twitter.com/1/users/show.json?screen_name=' + twitterUserName;
+        var requestString = '../../../shared/scripts/curl.php?apiCall=' + escape(apiCall);
+        
+        client.open('GET', requestString, true);
+        client.send();
+        
+        return false;
+      }
+      
+      function showList(event) {
+        if (event) {
+          event.preventDefault();
+        }
+        
+        $('#list').addClass('selected'); // Show List
+        $('#contactForm').removeClass(); // Hide Contact Form
+        
+        loadContacts();
+      }
+      
+      function insertContactInDB(fullName, twitterUserName, twitterImagePath, phoneNumber, age, email, url) {
+        if (db) {
+          db.transaction(function(tx) {
+            tx.executeSql('INSERT INTO contacts (fullName, twitterUserName, twitterImagePath, phoneNumber, age, email, url) values (?, ?, ?, ?, ?, ?, ?)',
+              [fullName,
+              twitterUserName,
+              twitterImagePath,
+              phoneNumber,
+              age,
+              email,
+              url]);
+          });
+          
+          showList(null);
+        }
+        else {
+          console.log('Error adding contact.');
+        }
+      }
+      
+      function hideAllDetails() {
+        var contacts = document.getElementsByClassName('contact');
+        for (var index in contacts) {
+          var contact = contacts[0];
+          contact.className = 'contact';
+        }
+      }
+      
+      function findContact() {
+        var searchField = document.getElementById('searchField');
+        searchField.blur();
+        
+        if (db) {
+          db.transaction(function(tx) {
+            tx.executeSql('SELECT * FROM contacts WHERE fullName LIKE "%' + searchField.value + '%"', [], function(tx, results) {
+              var len = results.rows.length;
+              if (len > 0) {
+                // Add results to list.
+                for (var i = 0; i < len; i++) {
+                  // addTweetToList(username, userImageURL, text)
+                  var contact = results.rows.item(i);
+                  addRowToList(
+                    contact.contactId,
+                    contact.fullName, 
+                    contact.twitterUserName,
+                    contact.twitterImagePath,
+                    contact.phoneNumber,
+                    contact.age,
+                    contact.email,
+                    contact.url);
+                }
+              }
+            });
+          })
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <header id='pageHeader'>Contacts</header>
+    <section id='list' class='selected'>
+      <div id='toolbar'>
+        <ul id='tools'>
+          <li id='addContactItem'>+</li>
+          <li id='searchItem'>
+            <form name='sf' id="sf">
+              <input id='searchField' type='search' placeholder='Find Contact' />
+            </form>
+          </li>
+          <li id='spinnerItem'>
+            <div id='spinner'></div>
+          </li>
+        </ul>
+      </div>
+      <ul id='contactsList'>
+        <!-- <li id='c1234' class='contact'>
+          <header>
+            <img src='http://a0.twimg.com/profile_images/422954940/xbox-live.png' alt='Jake Carter' />
+            <span class='fullName'>Jake Carter</span>
+          </header>
+          <div class='details'>
+            <span class=''>Twitter:</span>
+            <span class=''>Phone Number:</span>
+            <span class=''>Age:</span>
+            <span class=''>Email:</span>
+            <span class=''>URL:</span>
+          </div>  
+        </li>
+        <li>Erin Carter</li>
+        <li>Dexter</li>
+        <li>Maddy</li>
+        <li>Oswald</li> -->
+      </ul>
+    </section>
+    <section id='contactForm' class=''>
+      <form name='cf' id="cf">
+        <div>
+          <label for='fullName'>Full Name</label>
+          <input type='text' id='fullName' placeholder='Jake Carter' required />
+        </div>
+        <div>
+          <label for='twitterUserName'>Twitter User Name</label>
+          <input type="text" id="twitterUserName" placeholder="JakeCarter" />
+        </div>
+        <div>
+          <label for='phoneNumber'>Phone Number</label>
+          <input type='tel' id='phoneNumber' placeholder='(xxx) xxx-xxxx' />
+        </div>
+        <div>
+          <label for='age'>Age</label>
+          <input type="number" id="age" placeholder="30" />
+        </div>
+        <div>
+          <label for='email'>Email</label>
+          <input type="email" id="email" placeholder="name@domain.com" />
+        </div>
+        <div>
+          <label for='url'>URL</label>
+          <input type="url" id="url" placeholder="http://example.com" />
+        </div>
 
-				var client = new XMLHttpRequest();
-				client.onreadystatechange = function() {
-					if (this.readyState == XMLHttpRequest.prototype.DONE && this.status == 200) {
-						var profile = eval('(' + this.responseText + ')');
-						
-						// Get HTML Elements.
-						twitterImagePath = profile.profile_image_url;
-						
-						insertContactInDB(fullName, twitterUserName, twitterImagePath, phoneNumber, age, email, url);
-					}
-				};
-				var apiCall = 'http://api.twitter.com/1/users/show.json?screen_name=' + twitterUserName;
-				var requestString = '../../../shared/scripts/curl.php?apiCall=' + escape(apiCall);
-				
-				client.open('GET', requestString, true);
-				client.send();
-				
-				return false;
-			}
-			
-			function showList(event) {
-				if (event) {
-					event.preventDefault();
-				}
-				
-				// Show List
-				$('#list').addClass('selected');
-				
-				// Hide Contact Form
-				$('#contactForm').removeClass();
-				
-				loadContacts();
-			}
-			
-			function insertContactInDB(fullName, twitterUserName, twitterImagePath, phoneNumber, age, email, url) {
-				if (db) {
-					db.transaction(function(tx) {
-						tx.executeSql('INSERT INTO contacts (fullName, twitterUserName, twitterImagePath, phoneNumber, age, email, url) values (?, ?, ?, ?, ?, ?, ?)',
-							[fullName,
-							twitterUserName,
-							twitterImagePath,
-							phoneNumber,
-							age,
-							email,
-							url]);
-					});
-					
-					showList(null);
-				}
-				else {
-					console.log('Error adding contact.');
-				}
-			}
-			
-			function hideAllDetails() {
-				var contacts = document.getElementsByClassName('contact');
-				for (var index in contacts) {
-					var contact = contacts[0];
-					contact.className = 'contact';
-				}
-			}
-			
-			function findContact() {
-				var searchField = document.getElementById('searchField');
-				searchField.blur();
-				
-				if (db) {
-					db.transaction(function(tx) {
-						tx.executeSql('SELECT * FROM contacts WHERE fullName LIKE "%' + searchField.value + '%"', [], function(tx, results) {
-							var len = results.rows.length;
-							if (len > 0) {
-								// Add results to list.
-								for (var i = 0; i < len; i++) {
-									// addTweetToList(username, userImageURL, text)
-									var contact = results.rows.item(i);
-									addRowToList(
-										contact.contactId,
-										contact.fullName, 
-										contact.twitterUserName,
-										contact.twitterImagePath,
-										contact.phoneNumber,
-										contact.age,
-										contact.email,
-										contact.url);
-								}
-							}
-						});
-					})
-				}
-			}
-		</script>
-	</head>
-	<body>
-		<header id='pageHeader'>Contacts</header>
-		<section id='list' class='selected'>
-			<div id='toolbar'>
-				<ul id='tools'>
-					<li id='addContactItem'>+</li>
-					<li id='searchItem'>
-						<form name='sf'>
-							<input id='searchField' type='search' placeholder='Find Contact' />
-						</form>
-					</li>
-					<li id='spinnerItem'>
-						<div id='spinner'></div>
-					</li>
-				</ul>
-			</div>
-			<ul id='contactsList'>
-				<!-- <li id='c1234' class='contact'>
-					<header>
-						<img src='http://a0.twimg.com/profile_images/422954940/xbox-live.png' alt='Jake Carter' />
-						<span class='fullName'>Jake Carter</span>
-					</header>
-					<div class='details'>
-						<span class=''>Twitter:</span>
-						<span class=''>Phone Number:</span>
-						<span class=''>Age:</span>
-						<span class=''>Email:</span>
-						<span class=''>URL:</span>
-					</div>	
-				</li>
-				<li>Erin Carter</li>
-				<li>Dexter</li>
-				<li>Maddy</li>
-				<li>Oswald</li> -->
-			</ul>
-		</section>
-		<section id='contactForm' class=''>
-			<form name='cf'>
-				<div>
-					<label for='fullName'>Full Name</label>
-					<input type='text' id='fullName' placeholder='Jake Carter' required />
-				</div>
-				<div>
-					<label for='twitterUserName'>Twitter User Name</label>
-					<input type="text" id="twitterUserName" placeholder="JakeCarter" />
-				</div>
-				<div>
-					<label for='phoneNumber'>Phone Number</label>
-					<input type='tel' id='phoneNumber' placeholder='(xxx) xxx-xxxx' />
-				</div>
-				<div>
-					<label for='age'>Age</label>
-					<input type="number" id="age" placeholder="30" />
-				</div>
-				<div>
-					<label for='email'>Email</label>
-					<input type="email" id="email" placeholder="name@domain.com" />
-				</div>
-				<div>
-					<label for='url'>URL</label>
-					<input type="url" id="url" placeholder="http://example.com" />
-				</div>
-
-				<button id='cancelButton'>Cancel</button>
-				<button type='submit'>Add Contact</button>
-			</form>
-		</section>
-	</body>
+        <button id='cancelButton'>Cancel</button>
+        <button type='submit'>Add Contact</button>
+      </form>
+    </section>
+  </body>
 </html>
