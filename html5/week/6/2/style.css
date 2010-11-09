@@ -1,0 +1,139 @@
+body {
+	font-family: 'Helvetica';
+}
+/*
+	Header
+*/
+header#pageHeader {
+	-webkit-box-sizing: border-box;
+	width: 100%;
+	height: 44px;
+	background-image: -webkit-gradient(
+		linear, 
+		0% 0%, 
+		0% 100%, 
+		from(#666666), 
+		to(#666666), 
+		color-stop(.5,#333333)
+	);
+	font-family: Chunk, Helvetica;
+	text-align: center;
+	color: #ffffff;
+	font-weight: bold;
+	font-size: 1.5em;
+	padding-top: 11px;
+}
+/*
+	Section Animations
+*/
+section {
+	-webkit-transition-property: opacity;
+	-webkit-transition-duration: 0.5s;
+	-webkit-transition-timing-function: ease;
+	
+	z-index: 0;
+	position: absolute;
+/*	top: 88px;*/
+	width: 100%;
+	background-color: #ffffff;
+	display: block;
+	opacity: 0;
+}
+section.selected {
+	z-index: 100;
+	opacity: 1;
+}
+
+div#toolbar {
+	height: 44px;
+	background-image: -webkit-gradient(
+		linear, 
+		0% 0%, 
+		0% 100%, 
+		from(#999999), 
+		to(#999999), 
+		color-stop(.5,#666666)
+	);
+}
+#addContactItem {
+	color: #ffffff;
+}
+
+div#toolbar #tools {
+	line-height: 44px;
+	padding-left: 10px;
+}
+div#toolbar #tools li {
+	display: inline-block;
+}
+
+div#toolbar #addContactItem {
+	font-size: 30px;
+}
+
+div#toolbar #tools #searchItem {
+	position: relative;
+	top: -6px;
+	padding-left: 5px;
+}
+
+section#list #contactsList a:link,
+section#list #contactsList a:visited {
+	color: #000000;
+	display: block;
+	width: 100%;
+	height: 100%;
+	text-decoration: none;
+}
+section#list ul#contactsList {
+	list-style: none;
+}
+
+section#list ul#contactsList li {
+	-webkit-box-sizing: border-box;
+	-webkit-transition-property: height;
+	-webkit-transition-duration: 0.5s;
+	-webkit-transition-timing-function: ease;
+	
+/*	min-height: 44px;*/
+	overflow: hidden;
+	height: 44px;
+	width: 100%;
+	font-size: 1.4em;
+/*	font-weight: bold;*/
+	padding: 5px;
+}
+section#list ul#contactsList li.selected {
+	height: 132px;
+}
+section#list ul#contactsList li div.details {
+	padding-top: 5px;
+	font-size: 12pt;
+}
+section#list ul#contactsList li div.details span {
+	display: block;
+}
+section#list ul#contactsList li img {
+	width: 34px;
+	height: 34px;
+}
+section#list ul#contactsList li span.fullName {
+	display: inline-block;
+	position: relative;
+	top: -8px;
+	padding-left: 10px;
+}
+section#list ul#contactsList li:nth-child(odd) {
+	background-color: #cccccc;
+}
+
+section#detail header {
+	display: inline-block;
+	min-width: 320px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+section#detail header img {
+	vertical-align: middle;
+}
