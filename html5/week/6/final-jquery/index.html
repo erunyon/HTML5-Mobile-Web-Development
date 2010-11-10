@@ -33,7 +33,8 @@
         });
         
         // Add Contact
-        $('#cf').submit(function(){
+        $('#cf').submit(function(e){
+          e.preventDefault();
           addContact();
         });
         
@@ -130,12 +131,11 @@
       }
       
       function addRowToList(contactId, fullName, twitterUserName, twitterImagePath, phoneNumber, age, email, url) {
-        var li = '<li id="c'+contactId+'" class="contact"><header data-id="c'+contactId+'">';
-        li += '<img src="'+twitterImagePath+'" alt="'+twitterUserName+'">';
-        li += '<span class="fullName">'+fullName+'</span>';
+        var li = '<li id="c'+contactId+'" class="contact">';
+        li += '<header data-id="c'+contactId+'">';
+        li += '  <img src="'+twitterImagePath+'" alt="'+twitterUserName+'">';
+        li += '  <span class="fullName">'+fullName+'</span>';
         li += '</header>';
-        
-        
         li += '<div class="details">';
         li += '  <span class="">Twitter: @'+twitterUserName+'</span>';
         li += '  <span class="">Phone: '+phoneNumber+'</span>';
@@ -147,8 +147,7 @@
         $('#contactsList').append(li);
       }
       
-      function addContact(event) {
-        event.preventDefault();
+      function addContact() {
         document.activeElement.blur();
         
         if (("checkValidity" in document.cf) &&
@@ -165,24 +164,12 @@
             email = $('#email').val(),
             url = $('#url').val();
 
-        var client = new XMLHttpRequest();
-        client.onreadystatechange = function() {
-          if (this.readyState == XMLHttpRequest.prototype.DONE && this.status == 200) {
-            var profile = eval('(' + this.responseText + ')');
-            
-            // Get HTML Elements.
-            twitterImagePath = profile.profile_image_url;
-            
-            insertContactInDB(fullName, twitterUserName, twitterImagePath, phoneNumber, age, email, url);
-          }
-        };
-        var apiCall = 'http://api.twitter.com/1/users/show.json?screen_name=' + twitterUserName;
-        var requestString = '../../../shared/scripts/curl.php?apiCall=' + escape(apiCall);
-        
-        client.open('GET', requestString, true);
-        client.send();
-        
-        return false;
+        $.getJSON("http://api.twitter.com/1/users/show.json?screen_name="+twitterUserName+"&callback=?", function(json){
+          var profile = json,
+              twitterImagePath = profile.profile_image_url;
+          
+          insertContactInDB(fullName, twitterUserName, twitterImagePath, phoneNumber, age, email, url);
+        });
       }
       
       function showList(event) {
@@ -317,8 +304,8 @@
           <input type="url" id="url" placeholder="http://example.com" />
         </div>
 
-        <button id='cancelButton'>Cancel</button>
         <button type='submit'>Add Contact</button>
+        <button id='cancelButton'>Cancel</button>
       </form>
     </section>
   </body>
