@@ -41,6 +41,11 @@
         $('#cancelButton').click(function(){
           showList();
         });
+        
+        $('#contactsList header').live('click', function(){
+          var id = this.getAttribute('data-id');
+          $('#'+id).toggleClass('selected');
+        });
       }
 
       function prepDB() {
@@ -125,52 +130,21 @@
       }
       
       function addRowToList(contactId, fullName, twitterUserName, twitterImagePath, phoneNumber, age, email, url) {
-        var img = document.createElement('img');
-        img.setAttribute('src', twitterImagePath);
-        img.setAttribute('alt', twitterUserName);
+        var li = '<li id="c'+contactId+'" class="contact"><header data-id="c'+contactId+'">';
+        li += '<img src="'+twitterImagePath+'" alt="'+twitterUserName+'">';
+        li += '<span class="fullName">'+fullName+'</span>';
+        li += '</header>';
         
-        var fullNameSpan = document.createElement('span');
-        fullNameSpan.setAttribute('class', 'fullName');
-        fullNameSpan.innerText = fullName;
         
-        var header = document.createElement('header');
-        header.addEventListener("click", function() {
-          $('#c'+contactId).toggleClass('selected');
-        }, false);
-        header.appendChild(img);
-        header.appendChild(fullNameSpan);
+        li += '<div class="details">';
+        li += '  <span class="">Twitter: @'+twitterUserName+'</span>';
+        li += '  <span class="">Phone: '+phoneNumber+'</span>';
+        li += '  <span class="">Age: '+age+'</span>';
+        li += '  <span class="">Email: '+email+'</span>';
+        li += '  <span class="">URL: '+url+'</span>';
+        li += '</div></li>';
         
-        var twitterUserNameSpan = document.createElement('span');
-        twitterUserNameSpan.innerText = 'Twitter: ' + twitterUserName;
-        
-        var phoneNumberSpan = document.createElement('span');
-        phoneNumberSpan.innerText = 'Phone Number: ' + phoneNumber;
-        
-        var ageSpan = document.createElement('span');
-        ageSpan.innerText = 'Age: ' + age;
-        
-        var emailSpan = document.createElement('span');
-        emailSpan.innerText = 'Email: ' + email;
-        
-        var urlSpan = document.createElement('span');
-        urlSpan.innerText = 'URL: ' + url;
-        
-        var div = document.createElement('div');
-        div.setAttribute('class', 'details');
-        div.appendChild(twitterUserNameSpan);
-        div.appendChild(phoneNumberSpan);
-        div.appendChild(ageSpan);
-        div.appendChild(emailSpan);
-        div.appendChild(urlSpan);
-        
-        var li = document.createElement('li');
-        li.setAttribute('id', 'c' + contactId);
-        li.setAttribute('class', 'contact');
-        li.appendChild(header);
-        li.appendChild(div);
-        
-        var contactsList = document.getElementById('contactsList');
-        contactsList.appendChild(li);
+        $('#contactsList').append(li);
       }
       
       function addContact(event) {

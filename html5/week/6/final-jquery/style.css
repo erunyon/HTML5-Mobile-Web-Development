@@ -27,7 +27,8 @@ div#toolbar {height:44px;
 		from(#999999), 
 		to(#999999), 
 		color-stop(.5,#666666)
-	);}
+	);
+}
 #addContactItem {color:#ffffff;}
 
 div#toolbar #tools {line-height:44px; padding-left:10px;}
@@ -64,4 +65,4 @@ input[type="submit"] {border:1px solid #4c4c4c;}
   100% {-webkit-transform:scale(1) rotate(360deg);}
 }
 div#toolbar #tools #spinnerItem #spinner {z-index:999; position:absolute; top:4px; left:190px; width:36px; height:36px; background-color:#000000; display:none;}
-div#toolbar #tools #spinnerItem #spinner.spin {display:block; -webkit-animation-name:'spin'; -webkit-animation-duration:1s; -webkit-animation-iteration-count:5;}
+div#toolbar #tools #spinnerItem #spinner.spin {display:block; -webkit-animation-name:'spin'; -webkit-animation-duration:1s; -webkit-animation-iteration-count:3;}
