@@ -1,0 +1,169 @@
+body {
+	font-family: 'Helvetica';
+	min-height: 1024px;
+}
+li {
+	list-style-type: none;
+}
+/*
+	Header
+*/
+header#pageHeader {
+	-webkit-box-sizing: border-box;
+	width: 100%;
+	height: 44px;
+	background-image: -webkit-gradient(
+		linear, 
+		0% 0%, 
+		0% 100%, 
+		from(#666666), 
+		to(#666666), 
+		color-stop(.5,#333333)
+	);
+	text-align: center;
+	color: #ffffff;
+	font-weight: bold;
+	font-size: 1.5em;
+	padding-top: 11px;
+}
+div#toolbar {
+	height: 44px;
+	background-image: -webkit-gradient(
+		linear, 
+		0% 0%, 
+		0% 100%, 
+		from(#999999), 
+		to(#999999), 
+		color-stop(.5,#666666)
+	);
+}
+
+#liVideo,
+#liAudio {
+	-webkit-box-sizing: border-box;
+/*	border: 1px solid #ff0000;*/
+	display: inline-block;
+	width: 44px;
+	height: 44px;
+}
+
+#liVideo {
+	background: url('../../../shared/images/icons/icons/46-movie2.png') center center no-repeat;
+}
+#liAudio {
+	background: url('../../../shared/images/icons/icons/65-note.png') center center no-repeat;	
+}
+
+section {
+	display: none;
+	width: 700px;
+	height: 700px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+section.selected {
+	display: block;
+}
+
+ul.tapes {
+	position: relative;
+	width: 700px;
+}
+ul.tapes li {
+	float: left;
+}
+
+/* Video */
+section#video {
+	background: url('../../../shared/images/tv.png') center center no-repeat;
+}
+section#video video {
+	position: relative;
+	top: 300px;
+	left: 140px;
+	width: 360px;
+	height: 240px;
+	
+	-webkit-transform: rotate(-8deg);
+}
+
+section#video ul#vhs {
+	top: 475px;	
+}
+section#video ul#vhs li {
+	width: 150px;
+	height: 85px;
+	background: url('../../../shared/images/vhs.png') center center no-repeat;
+}
+section#video ul#vhs li span {
+	display: block;
+	position: relative;
+	top: 40px;
+	left: 55px
+}
+
+/* Audio */
+section#audio {
+	background: url('../../../shared/images/radio.png') top center no-repeat;
+}
+
+/* Audio Progress */
+section#audio div#progressBar {
+	border: 2px solid #000000;
+	position: relative;
+	top: 300px;
+	left: 250px;
+	width: 175px;
+	height: 10px;
+}
+section#audio div#progressBar div#progressIndicator {
+	height: 100%;
+	width: 0%;
+	background-color: #666666;
+}
+
+#songLabel {
+	position: relative;
+	top: 310px;
+	left: 250px;
+	
+	width: 175px;
+	font-weight: bold;
+	text-align: center;
+}
+
+section#audio ul#controls {
+	position: relative;
+	top: 440px;
+	width: 150px;
+	left: 260px;
+}
+
+section#audio ul#controls li {
+	float: left;
+}
+
+section#audio ul#controls li.selected {
+	-webkit-transform: rotate(-8deg);
+}
+
+section#audio ul#cassette {
+	clear: both;
+	top: 490px;
+}
+
+section#audio ul#cassette li {
+	width: 150px;
+	height: 98px;
+	background: url('../../../shared/images/cassette.png') center center no-repeat;
+}
+
+section#audio ul#cassette li span {
+	width: 105px;
+	text-align: center;
+	display: block;
+	position: relative;
+	top: 17px;
+	left: 25px;
+}

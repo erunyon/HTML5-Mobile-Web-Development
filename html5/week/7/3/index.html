@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Content-Language" content="en"/>
+		<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>Video &amp; Audio</title>
+		
+		<link rel="stylesheet" href="html5reset.css" type="text/css" media="screen" charset="utf-8" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8">
+		
+		<style>
+			/* TODO: Point out. */
+			/* Audio Progress */
+			#progressBar {
+				border: 2px solid #000000;
+				position: relative;
+				top: 300px;
+				left: 250px;
+				width: 175px;
+				height: 10px;
+			}
+			#progressIndicator {
+				height: 100%;
+				width: 0%;
+				background-color: #666666;
+			}
+		</style>
+		
+		<script type="text/javascript">
+			window.addEventListener("load", function(){
+				addEventListeners();
+			}, false);
+			
+			function addEventListeners() {
+				// Toolbar Listeners
+				var liVideo = document.getElementById('liVideo');
+				liVideo.addEventListener('click', showVideo, false);
+				
+				var liAudio = document.getElementById('liAudio');
+				liAudio.addEventListener('click', showAudio, false);
+				
+				var audio = document.getElementsByTagName('audio')[0];
+				// TODO: Uncomment.
+				// Audio Time Update
+				// audio.addEventListener('timeupdate', function() {
+				// 	var progressIndicator = document.getElementById('progressIndicator');
+				// 
+				// 	var progress = parseInt(((audio.currentTime / audio.duration) * 100));
+				// 	progressIndicator.style.width = (progress + '%');
+				// }, false);
+				
+				// Audio Controlls
+				var imgPlay = document.getElementById('imgPlay');
+				imgPlay.addEventListener('click', function() {
+					audio.play();
+					var liPlay = document.getElementById('liPlay');
+					var liPause = document.getElementById('liPause');
+					
+					liPlay.setAttribute('class', 'selected');
+					liPause.setAttribute('class', '');
+				}, false);
+				
+				var imgPause = document.getElementById('imgPause');
+				imgPause.addEventListener('click', function() {
+					audio.pause();
+					var liPlay = document.getElementById('liPlay');
+					var liPause = document.getElementById('liPause');
+					
+					liPlay.setAttribute('class', '');
+					liPause.setAttribute('class', 'selected');
+				}, false);
+			}
+			
+			function showVideo() {
+				var audioSection = document.getElementById('audio');
+				var videoSection = document.getElementById('video');
+				
+				videoSection.setAttribute('class', 'selected');
+				audioSection.setAttribute('class', '');
+			}
+			
+			function showAudio() {
+				var audioSection = document.getElementById('audio');
+				var videoSection = document.getElementById('video');
+				
+				videoSection.setAttribute('class', '');
+				audioSection.setAttribute('class', 'selected');
+			}
+		</script>
+	</head>
+	<body>
+		<header id='pageHeader'>
+			Audio &amp; Video
+		</header>
+		<div id='toolbar'>
+			<ul>
+				<li id='liVideo'></li>
+				<li id='liAudio'></li>
+			</ul>
+		</div>
+		<section id='video' class='selected'>
+			<video src='../../../shared/videos/sun.mp4' controls>
+				Your browser does not support the video tag.
+			</video>
+		</section>
+		<section id='audio' class=''>
+			<audio src='../../../shared/audio/SlowBlues.mp3'>
+				Your browser does not support the audio tag.
+			</audio>
+			<!-- TODO: Point out. -->
+			<div id='progressBar'><div id='progressIndicator'></div></div>
+			<div id='songLabel'>Slow Blues</div>
+			<ul id='controls'>
+				<li id='liPlay'><img id='imgPlay' src='../../../shared/images/radio-play.png' alt='Radio Play Button' /></li>
+				<li id='liPause'><img id='imgPause' src='../../../shared/images/radio-pause.png' alt='Radio Pause Button' /></li>
+			</ul>
+		</section>
+	</body>
+</html>

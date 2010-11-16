@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Content-Language" content="en"/>
+		<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>Video &amp; Audio</title>
+		
+		<link rel="stylesheet" href="html5reset.css" type="text/css" media="screen" charset="utf-8" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8">
+		
+		<style>
+			section#video video {
+				position: relative;
+				top: 300px;
+				left: 140px;
+				width: 360px;
+				height: 240px;
+				
+				/* TODO: Add rotation. */
+			}
+		</style>
+		
+		<script type="text/javascript">
+			window.addEventListener("load", function(){
+				addEventListeners();
+			}, false);
+			
+			function addEventListeners() {
+				// Toolbar Listeners
+				var liVideo = document.getElementById('liVideo');
+				liVideo.addEventListener('click', showVideo, false);
+				
+				var liAudio = document.getElementById('liAudio');
+				liAudio.addEventListener('click', showAudio, false);
+			}
+			
+			function showVideo() {
+				var audioSection = document.getElementById('audio');
+				var videoSection = document.getElementById('video');
+				
+				videoSection.setAttribute('class', 'selected');
+				audioSection.setAttribute('class', '');
+			}
+			
+			function showAudio() {
+				var audioSection = document.getElementById('audio');
+				var videoSection = document.getElementById('video');
+				
+				videoSection.setAttribute('class', '');
+				audioSection.setAttribute('class', 'selected');
+			}
+		</script>
+	</head>
+	<body>
+		<header id='pageHeader'>
+			Audio &amp; Video
+		</header>
+		<div id='toolbar'>
+			<ul>
+				<li id='liVideo'></li>
+				<li id='liAudio'></li>
+			</ul>
+		</div>
+		<section id='video' class='selected'>
+			<!-- TODO: Add video tag -->
+		</section>
+		<section id='audio' class=''>
+		</section>
+	</body>
+</html>
