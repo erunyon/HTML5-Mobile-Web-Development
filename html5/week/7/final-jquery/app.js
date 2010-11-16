@@ -14,8 +14,7 @@ function addEventListeners() {
   });
   
   // Cassette Listeners
-  var $audio = $('#cassette li');
-  $audio.each(function(){
+  $('#cassette li').each(function(){
     $(this).click(function(e){
       changeAudio(e);
     });
@@ -26,7 +25,7 @@ function addEventListeners() {
     var $progressIndicator = $('#progressIndicator'),
         audio = this,
         progress = parseInt(((audio.currentTime / audio.duration) * 100));
-        
+
     $progressIndicator.css({width: progress+'%'});
   });
   
