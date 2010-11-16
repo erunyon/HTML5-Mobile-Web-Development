@@ -49,11 +49,15 @@ function addEventListeners() {
 }
 
 function showVideo() {
+  $('#audio-player')[0].pause();
+  
   $('#audio').removeClass('selected');
   $('#video').addClass('selected');
 }
 
 function showAudio() {
+  $('#video-player')[0].pause();
+  
   $('#audio').addClass('selected');
   $('#video').removeClass('selected');
 }
