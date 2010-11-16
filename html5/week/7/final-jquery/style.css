@@ -14,7 +14,7 @@ header#pageHeader {-webkit-box-sizing:border-box; width:100%; height:44px; text-
 		color-stop(.5,#333333)
 	);
 }
-div#toolbar {height:44px;
+#toolbar {height:44px;
   background-image:-webkit-gradient(
 		linear, 
 		0% 0%, 
@@ -24,6 +24,7 @@ div#toolbar {height:44px;
 		color-stop(.5,#666666)
 	);
 }
+#toolbar a {display:block; text-indent:-9999px; overflow:hidden;}
 #liVideo,
 #liAudio {-webkit-box-sizing:border-box; /*	border: 1px solid #ff0000;*/ display:inline-block; width:44px; height:44px;}
 #liVideo {background:url('../../../shared/images/icons/icons/46-movie2.png') center center no-repeat;}

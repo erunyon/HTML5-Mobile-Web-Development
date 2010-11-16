@@ -1,90 +1,84 @@
-window.addEventListener("load", function(){
-	addEventListeners();
-}, false);
+addEventListeners();
 
 function addEventListeners() {
-	// Toolbar Listeners
-	var liVideo = document.getElementById('liVideo');
-	liVideo.addEventListener('click', showVideo, false);
-	
-	var liAudio = document.getElementById('liAudio');
-	liAudio.addEventListener('click', showAudio, false);
-	
-	// Cassette Listeners
-	var listItems = document.getElementById('cassette');
-	for (var index = 0; index < listItems.children.length; index++) {
-		var item = listItems.children[index];
-		item.addEventListener('click', changeAudio, false);
-	}
-	
-	// Audio Time Update
-	var audio = document.getElementsByTagName('audio')[0];
-	audio.addEventListener('timeupdate', function() {
-		var progressIndicator = document.getElementById('progressIndicator');
-	
-		var progress = parseInt(((audio.currentTime / audio.duration) * 100));
-		progressIndicator.style.width = (progress + '%');
-	}, false);
-	
-	// Audio Controlls
-	var imgPlay = document.getElementById('imgPlay');
-	imgPlay.addEventListener('click', function() {
-		audio.play();
-		var liPlay = document.getElementById('liPlay');
-		var liPause = document.getElementById('liPause');
-		
-		liPlay.setAttribute('class', 'selected');
-		liPause.setAttribute('class', '');
-	}, false);
-	
-	var imgPause = document.getElementById('imgPause');
-	imgPause.addEventListener('click', function() {
-		audio.pause();
-		var liPlay = document.getElementById('liPlay');
-		var liPause = document.getElementById('liPause');
-		
-		liPlay.setAttribute('class', '');
-		liPause.setAttribute('class', 'selected');
-	}, false);
+  var $audio = $('#audio-player');
+  
+  // Toolbar Listeners
+  $('#liVideo').click(function(e){
+    e.preventDefault();
+    showVideo();
+  });
+  $('#liAudio').click(function(e){
+    e.preventDefault();
+    showAudio()
+  });
+  
+  // Cassette Listeners
+  var $audio = $('#cassette li');
+  $audio.each(function(){
+    $(this).click(function(e){
+      changeAudio(e);
+    });
+  });
+  
+  // Audio Time Update
+  $audio.bind('timeupdate', function(){
+    var $progressIndicator = $('#progressIndicator'),
+        audio = this,
+        progress = parseInt(((audio.currentTime / audio.duration) * 100));
+        
+    $progressIndicator.css({width: progress+'%'});
+  });
+  
+  // Audio Controls
+  $('#imgPlay').click(function(e) {
+    e.preventDefault();
+    $('#audio-player')[0].play();
+    
+    $('#liPlay').addClass('selected');
+    $('#liPause').removeClass();
+  });
+  
+  $('#imgPause').click(function(e) {
+    e.preventDefault();
+    $('#audio-player')[0].pause();
+    
+    $('#liPlay').removeClass();
+    $('#liPause').addClass('selected');
+  });
 }
 
 function showVideo() {
-	var audioSection = document.getElementById('audio');
-	var videoSection = document.getElementById('video');
-	
-	videoSection.setAttribute('class', 'selected');
-	audioSection.setAttribute('class', '');
+  $('#audio').removeClass('selected');
+  $('#video').addClass('selected');
 }
 
 function showAudio() {
-	var audioSection = document.getElementById('audio');
-	var videoSection = document.getElementById('video');
-	
-	videoSection.setAttribute('class', '');
-	audioSection.setAttribute('class', 'selected');
+  $('#audio').addClass('selected');
+  $('#video').removeClass('selected');
 }
 
 function changeAudio(event) {
-	var item = event.target;
-	
-	// Change Song Label
-	var name = item.children[0].innerText;
-	if (name) {
-		var songLabel = document.getElementById('songLabel');
-		songLabel.innerText = name;
-	}
-	
-	//var src = item.dataset.src;
-	// Change Audio Source
-	var src = item.getAttribute('data-src');
-	if (src) {
-		var audio = document.getElementsByTagName('audio')[0];
-		// canplaythrough might be a better choice.
-		audio.addEventListener('canplay', function() {
-			audio.play();
-		}, false);
-		
-		audio.src = src;
-		audio.load();
-	}
+  var item = event.target;
+  
+  // Change Song Label
+  var name = item.children[0].innerText;
+  if (name) {
+    $('#songLabel').text(name);
+  }
+  
+  //var src = item.dataset.src;
+  // Change Audio Source
+  var src = item.getAttribute('data-src');
+  if (src) {
+    var $audio = $('#audio-player'),
+        audio = $audio[0];
+    // canplaythrough might be a better choice.
+    $audio.bind('canplay', function() {
+      audio.play();
+    });
+    
+    audio.src = src;
+    audio.load();
+  }
 }

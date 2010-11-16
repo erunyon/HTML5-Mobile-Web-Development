@@ -1,43 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta http-equiv="Content-Language" content="en"/>
-		<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no" />
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<title>Video &amp; Audio</title>
-		<link rel="stylesheet" href="html5reset.css" type="text/css" media="screen" charset="utf-8" />
-		<link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8">
-		<script type="text/javascript" src="app.js"></script>
-	</head>
-	<body>
-		<header id='pageHeader'>Audio &amp; Video</header>
-		<div id='toolbar'>
-			<ul>
-				<li id='liVideo'></li>
-				<li id='liAudio'></li>
-			</ul>
-		</div>
-		<section id='video' class='selected'>
-			<video src='../../../shared/videos/sun.mp4' controls>
-				Your browser does not support the video tag.
-			</video>
-		</section>
-		<section id='audio' class=''>
-			<audio src='../../../shared/audio/SlowBlues.mp3'>
-				Your browser does not support the audio tag.
-			</audio>
-			<div id='progressBar'><div id='progressIndicator'></div></div>
-			<div id='songLabel'>Slow Blues</div>
-			<ul id='controls'>
-				<li id='liPlay'><img id='imgPlay' src='../../../shared/images/radio-play.png' alt='Radio Play Button' /></li>
-				<li id='liPause'><img id='imgPause' src='../../../shared/images/radio-pause.png' alt='Radio Pause Button' /></li>
-			</ul>
-			<ul id='cassette' class='tapes'>
-				<li data-type='audio' data-src='../../../shared/audio/SlowBlues.mp3'><span>Slow Blues</span></li>
-				<li data-type='audio' data-src='../../../shared/audio/Funk.mp3'><span>Funk</span></li>
-			</ul>
-		</section>
-	</body>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Language" content="en"/>
+	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<title>Video &amp; Audio</title>
+	<link rel="stylesheet" href="html5reset.css" type="text/css" media="screen" charset="utf-8" />
+	<link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8">
+</head>
+<body>
+	<header id='pageHeader'>Audio &amp; Video</header>
+	<div id='toolbar'>
+		<ul>
+			<li id='liVideo'><a href="#audio">Audio</a></li>
+			<li id='liAudio'><a href="#video">Video</a></li>
+		</ul>
+	</div>
+	<section id='video' class='selected'>
+		<video src='../../../shared/videos/sun.mp4' controls>
+			Your browser does not support the video tag.
+		</video>
+	</section>
+	<section id='audio' class=''>
+		<audio id="audio-player" src='../../../shared/audio/SlowBlues.mp3'>
+			Your browser does not support the audio tag.
+		</audio>
+		<div id='progressBar'><div id='progressIndicator'></div></div>
+		<div id='songLabel'>Slow Blues</div>
+		<ul id='controls'>
+			<li id='liPlay'><img id='imgPlay' src='../../../shared/images/radio-play.png' alt='Radio Play Button' /></li>
+			<li id='liPause'><img id='imgPause' src='../../../shared/images/radio-pause.png' alt='Radio Pause Button' /></li>
+		</ul>
+		<ul id='cassette' class='tapes'>
+			<li data-type='audio' data-src='../../../shared/audio/SlowBlues.mp3'><span>Slow Blues</span></li>
+			<li data-type='audio' data-src='../../../shared/audio/Funk.mp3'><span>Funk</span></li>
+		</ul>
+	</section>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+	<script type="text/javascript" src="app.js"></script>
+</body>
 </html>
