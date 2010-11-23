@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Content-Language" content="en"/>
+		<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>Canvas</title>
+		
+		<link rel="stylesheet" href="html5reset.css" type="text/css" media="screen" charset="utf-8" />
+		
+		<style>
+			body {
+				/*
+				Adding this gradient to the background of the page
+				to show that by default, the canvas background is
+				transparent.
+				*/
+				background-image: -webkit-gradient(
+					linear, 
+					0% 0%, 
+					0% 100%, 
+					from(#666666), 
+					to(#000000)
+				);
+			}
+			canvas {
+				/* 
+				If we size the canvas via CSS and not directly,
+				the canvas will have a default size of 300x150,
+				then will be scaled to the size we specify in
+				CSS. This will make our drawing pixelated.
+				*/
+/*				width: 100%;
+				height: 100%;*/
+			}
+		</style>
+
+		<script type="text/javascript">
+			var canvas = null;
+			var ctx = null;
+			
+			window.addEventListener("load", function() {
+				canvas = document.getElementById('myCanvas');
+				ctx = canvas.getContext('2d');
+				
+				addEventListeners();
+				
+				sizeCanvas();
+				drawCanvas();
+			}, false);
+			
+			function addEventListeners() {
+				// Orientation Detection
+				var supportsOrientationChange = "onorientationchange" in window;
+				var orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+				window.addEventListener(orientationEvent, function() {
+					sizeCanvas();
+					drawCanvas();
+				}, false);
+			}
+			
+			function sizeCanvas() {
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight;
+			}
+			
+			function drawCanvas() {
+			}
+		</script>
+	</head>
+	<body>
+		<canvas id='myCanvas'>
+			Fallback content.
+		</canvas>
+	</body>
+</html>

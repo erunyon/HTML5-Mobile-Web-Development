@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Content-Language" content="en"/>
+		<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>Canvas</title>
+		
+		<link rel="stylesheet" href="html5reset.css" type="text/css" media="screen" charset="utf-8" />
+		
+		<style>
+			body {
+				/*
+				Adding this gradient to the background of the page
+				to show that by default, the canvas background is
+				transparent.
+				*/
+				background-image: -webkit-gradient(
+					linear, 
+					0% 0%, 
+					0% 100%, 
+					from(#666666), 
+					to(#000000)
+				);
+			}
+			canvas {
+				/* 
+				If we size the canvas via CSS and not directly,
+				the canvas will have a default size of 300x150,
+				then will be scaled to the size we specify in
+				CSS. This will make our drawing pixelated.
+				*/
+/*				width: 100%;
+				height: 100%;*/
+			}
+
+			#patternImage {
+				display: none;
+			}
+		</style>
+
+		<script type="text/javascript">
+			var canvas = null;
+			var ctx = null;
+			
+			window.addEventListener("load", function() {
+				canvas = document.getElementById('myCanvas');
+				ctx = canvas.getContext('2d');
+				
+				addEventListeners();
+				
+				sizeCanvas();
+				drawCanvas();
+			}, false);
+			
+			function addEventListeners() {
+				// Orientation Detection
+				var supportsOrientationChange = "onorientationchange" in window;
+				var orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+				window.addEventListener(orientationEvent, function() {
+					sizeCanvas();
+					drawCanvas();
+				}, false);
+			}
+			
+			function sizeCanvas() {
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight;
+			}
+			
+			function degreesToRadians(d) {
+				return d * (Math.PI / 180);
+			}
+			
+			function drawCanvas() {
+				// Solid
+				ctx.save();
+				ctx.fillStyle = '#ff0000';
+				ctx.fillRect(10, 		// X
+							 10, 		// Y
+							 100,		// Width
+							 100		// Height
+							);
+				ctx.strokeStyle = '#ffffff';
+				ctx.lineWidth = 5;
+				ctx.strokeRect(10, 10, 100, 100);
+				ctx.restore();
+				
+				// Alpha
+				ctx.save();
+				ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
+				ctx.fillRect(60, 60, 100, 100);
+				ctx.strokeStyle = '#ffffff';
+				ctx.lineWidth = 5;
+				ctx.lineJoin = 'round';
+				ctx.strokeRect(60.5, 60.5, 100, 100);
+				ctx.restore();
+				
+				// Gradient
+				ctx.save();
+				var lingrad = ctx.createLinearGradient(110, 110, 110, 210);  
+				lingrad.addColorStop(0, 'white');  
+				lingrad.addColorStop(1, 'rgba(0, 0, 255, 0)');
+				ctx.fillStyle = lingrad;
+				ctx.fillRect(110,110,100,100);
+				ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
+				ctx.lineWidth = 5;
+				ctx.strokeRect(110.5, 110.5, 100, 100);
+				ctx.restore();
+				
+				// Pattern
+				ctx.save();
+				var img = document.getElementById('patternImage');
+				var pattern = ctx.createPattern(img, 'repeat');  
+				ctx.fillStyle = pattern;  
+				ctx.fillRect(160, 160, 100, 100);
+				ctx.restore();
+				
+				// Clear Rect
+				ctx.clearRect(210,210,100,100);
+				
+				// Vertical Line
+				// ctx.save();
+				// ctx.strokeStyle = 'white';
+				// ctx.lineWidth = 2;
+				// ctx.beginPath();
+				// ctx.moveTo(10, 320);
+				// ctx.lineTo(10, 420);
+				// ctx.stroke();
+				// ctx.restore();
+				
+				// L Shape
+				// ctx.save();
+				// ctx.strokeStyle = 'white';
+				// ctx.lineWidth = 2;
+				// ctx.beginPath();
+				// ctx.moveTo(50, 320);
+				// ctx.lineTo(50, 420);
+				// ctx.lineTo(100, 420);
+				// ctx.stroke();
+				// ctx.restore();
+				
+				// Triangle Shape
+				// ctx.save();
+				// ctx.strokeStyle = 'white';
+				// ctx.lineWidth = 2;
+				// ctx.beginPath();
+				// ctx.moveTo(150, 320);
+				// ctx.lineTo(150, 420);
+				// ctx.lineTo(200, 420);
+				// ctx.closePath();
+				// ctx.stroke();
+				// ctx.restore();
+			}
+		</script>
+	</head>
+	<body>
+		<canvas id='myCanvas'>
+			Fallback content.
+		</canvas>
+		<img id='patternImage' src='../../../shared/images/pattern.jpg' alt='Pattern Image' />
+	</body>
+</html>
