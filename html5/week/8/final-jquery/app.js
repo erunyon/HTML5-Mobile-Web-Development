@@ -29,15 +29,16 @@ function degreesToRadians(d) {
 function drawCanvas() {
   // Solid
   ctx.save();
-  ctx.fillStyle = '#ff0000';
+  ctx.fillStyle = '#f00';
   ctx.fillRect(
     10, // X
     10, // Y
     100, // Width
     100 // Height
   );
-  ctx.strokeStyle = '#ffffff';
+  ctx.strokeStyle = '#fff';
   ctx.lineWidth = 5;
+  //ctx.lineWidth = 4; will display a crisp line due to center hung strokes
   ctx.strokeRect(10, 10, 100, 100);
   ctx.restore();
   
@@ -45,10 +46,10 @@ function drawCanvas() {
   ctx.save();
   ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
   ctx.fillRect(60, 60, 100, 100);
-  ctx.strokeStyle = '#ffffff';
+  ctx.strokeStyle = '#fff';
   ctx.lineWidth = 5;
   ctx.lineJoin = 'round';
-  ctx.strokeRect(60.5, 60.5, 100, 100);
+  ctx.strokeRect(60.5, 60.5, 100, 100); // half-pixel x/y addresses the center hung anti-aliasing
   ctx.restore();
   
   // Gradient
@@ -135,11 +136,12 @@ function drawCanvas() {
   ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.moveTo(qcX, qcY);
-  ctx.quadraticCurveTo(qcX+20,  // Control Point X
-             qcY+20,  // Control Point Y
-             qcX+0,    // End Point X
-             qcY+100  // End Point Y
-            );
+  ctx.quadraticCurveTo(
+    qcX+20, // Control Point X
+    qcY+20, // Control Point Y
+    qcX+0, // End Point X
+    qcY+100 // End Point Y
+  );
   ctx.stroke();
   ctx.restore();
   
@@ -156,11 +158,12 @@ function drawCanvas() {
   ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.moveTo(qc2X, qc2Y);
-  ctx.quadraticCurveTo(qc2cpX,  // Control Point X
-             qc2cpY,  // Control Point Y
-             qc2endX,  // End Point X
-             qc2endY  // End Point Y
-            );
+  ctx.quadraticCurveTo(
+    qc2cpX, // Control Point X
+    qc2cpY, // Control Point Y
+    qc2endX, // End Point X
+    qc2endY // End Point Y
+  );
   ctx.stroke();
   ctx.restore();
   
@@ -175,13 +178,14 @@ function drawCanvas() {
   ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.moveTo(ccX, ccY);  
-  ctx.bezierCurveTo(ccX+40,    // 1st Control Point X
-            ccY-40,    // 1st Control Point Y
-            ccX+100-40,  // 2nd Control Point X
-            ccY+40,    // 2nd Control Point Y
-            ccX+100,    // End Point X
-            ccY+0    // End Point Y
-          );
+  ctx.bezierCurveTo(
+    ccX+40,    // 1st Control Point X
+    ccY-40,    // 1st Control Point Y
+    ccX+100-40,  // 2nd Control Point X
+    ccY+40,    // 2nd Control Point Y
+    ccX+100,    // End Point X
+    ccY+0    // End Point Y
+  );
   ctx.stroke();
   ctx.restore();
   
@@ -200,13 +204,14 @@ function drawCanvas() {
   ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.moveTo(cc2X, cc2Y);  
-  ctx.bezierCurveTo(cc2cp1X,  // 1st Control Point X
-            cc2cp1Y,  // 1st Control Point Y
-            cc2cp2X,  // 2nd Control Point X
-            cc2cp2Y,  // 2nd Control Point Y
-            cc2endX,  // End Point X
-            cc2endY  // End Point Y
-          );
+  ctx.bezierCurveTo(
+    cc2cp1X, // 1st Control Point X
+    cc2cp1Y, // 1st Control Point Y
+    cc2cp2X, // 2nd Control Point X
+    cc2cp2Y, // 2nd Control Point Y
+    cc2endX, // End Point X
+    cc2endY // End Point Y
+  );
   ctx.stroke();
   ctx.restore();
   
