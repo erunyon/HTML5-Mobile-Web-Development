@@ -1,17 +1,9 @@
-var canvas = null;
-var ctx = null;
+var canvas = document.getElementById('myCanvas'),
+    ctx = canvas.getContext('2d');
 
-window.addEventListener("load", function() {
-	canvas = document.getElementById('myCanvas');
-	ctx = canvas.getContext('2d');
-	
-	addEventListeners();
-	
-	sizeCanvas();
-	drawCanvas();
-}, false);
+doSetup();
 
-function addEventListeners() {
+function doSetup() {
 	// Orientation Detection
 	var supportsOrientationChange = "onorientationchange" in window;
 	var orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
@@ -19,6 +11,9 @@ function addEventListeners() {
 		sizeCanvas();
 		drawCanvas();
 	}, false);
+	
+	sizeCanvas();
+  drawCanvas();
 }
 
 function sizeCanvas() {
