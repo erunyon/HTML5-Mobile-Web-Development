@@ -1,0 +1,28 @@
+body {
+	/*
+	Adding this gradient to the background of the page
+	to show that by default, the canvas background is
+	transparent.
+	*/
+	background-image: -webkit-gradient(
+		linear, 
+		0% 0%, 
+		0% 100%, 
+		from(#666666), 
+		to(#000000)
+	);
+}
+canvas {
+	/* 
+	If we size the canvas via CSS and not directly,
+	the canvas will have a default size of 300x150,
+	then will be scaled to the size we specify in
+	CSS. This will make our drawing pixelated.
+	*/
+  /*width: 100%;
+	height: 100%;*/
+}
+
+#patternImage {
+	display: none;
+}
