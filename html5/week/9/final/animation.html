@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Content-Language" content="en"/>
+		<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>Canvas</title>
+		
+		<link rel="stylesheet" href="html5reset.css" type="text/css" media="screen" charset="utf-8" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8">
+
+		<script type="text/javascript">
+			var canvas = null;
+			var ctx = null;
+			var intervalId = 0;
+			
+			window.addEventListener("load", function() {
+				canvas = document.getElementById('myCanvas');
+				ctx = canvas.getContext('2d');
+				
+				addEventListeners();
+				
+				sizeCanvas();
+				intervalId = setInterval(drawCanvas, 1000 / 60);
+			}, false);
+			
+			function addEventListeners() {
+				// Orientation Detection
+				var supportsOrientationChange = "onorientationchange" in window;
+				var orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+				window.addEventListener(orientationEvent, handleOrientationChange, false);
+			}
+			
+			function sizeCanvas() {
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight;
+			}
+			
+			function handleOrientationChange() {
+				sizeCanvas();
+				drawCanvas();
+			}
+			
+			function degreesToRadians(d) {
+				return d * (Math.PI / 180);
+			}
+			
+			// Create an object that will hold our circle's state
+			var c = { 
+				x:100,
+				y:0,
+				a:100
+			};
+			function drawCanvas() {
+				// Clear the context
+				ctx.clearRect(0,0,canvas.width,canvas.height);
+				
+				// Draw
+				ctx.save()
+				ctx.beginPath();
+				ctx.arc(c.x, c.y, 50, 0, degreesToRadians(360), true);
+				ctx.fillStyle = 'rgba(255, 255, 255,' + c.a / 100 + ')';
+				ctx.fill();
+				ctx.closePath();
+				ctx.restore();
+				
+				// Update our circle's state
+				c.y += 10;
+				c.a--;
+				
+				// Check to see if we should stop animating
+				if (c.y > canvas.height) {
+					clearInterval(intervalId);
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<canvas id='myCanvas'>your browser does 
+		not support the canvas tag</canvas>
+	</body>
+</html>

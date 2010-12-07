@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Content-Language" content="en"/>
+		<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>Canvas</title>
+		
+		<link rel="stylesheet" href="html5reset.css" type="text/css" media="screen" charset="utf-8" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8">
+
+		<script type="text/javascript">
+			var paintCheckbox = null;
+			var canvas = null;
+			var ctx = null;
+			var intervalId = 0;
+			var circles = [];
+			
+			window.addEventListener("load", function() {
+				canvas = document.getElementById('myCanvas');
+				ctx = canvas.getContext('2d');
+				paintCheckbox = document.getElementById('paintCheckbox');
+				
+				addEventListeners();
+				
+				sizeCanvas();
+				intervalId = setInterval(drawCanvas,100);
+			}, false);
+			
+			function addEventListeners() {
+				// Orientation Detection
+				var supportsOrientationChange = "onorientationchange" in window;
+				var orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+				window.addEventListener(orientationEvent, handleOrientationChange, false);
+				
+				canvas.addEventListener('click', handleCanvasClick, false);
+			}
+			
+			function handleCanvasClick(event) {
+				var c = new circle(event.x, event.y);
+				circles.push(c);
+			}
+			
+			function sizeCanvas() {
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight;
+			}
+			
+			function handleOrientationChange() {
+				sizeCanvas();
+				drawCanvas();
+			}
+			
+			function degreesToRadians(d) {
+				return d * (Math.PI / 180);
+			}
+			
+			function circle(x, y) {
+				// Position and size
+				this.x = x;
+				this.y = y;
+				this.radius = Math.floor(Math.random()*201);
+				
+				// Color
+				var r = Math.floor(Math.random()*256);
+				var g = Math.floor(Math.random()*256);
+				var b = Math.floor(Math.random()*256);
+				this.color = 'rgb(' + r + ',' + g + ',' + b + ')';
+				
+				// Speed
+				this.speed = randomXToY(5, 100);
+			}
+			
+			function randomXToY(minVal, maxVal) {
+				var d = maxVal - minVal;
+				return Math.floor((maxVal-(d -1))*Math.random()) + minVal;
+			}
+			
+			function drawCircle(c) {
+				ctx.save()
+				ctx.beginPath();
+				ctx.arc(c.x,c.y,c.radius,0,degreesToRadians(360),true);
+				ctx.fillStyle = c.color;
+				ctx.fill();
+				ctx.closePath();
+				ctx.restore();
+			}
+			
+			function removeCircleIfOffScreen(c) {
+				if ((c.x > canvas.width) ||
+					(c.y > canvas.height)) {
+					circles.splice(circles.indexOf(c), 1);
+				}
+			}
+			
+			function drawCanvas() {
+				if (!paintCheckbox.checked) {
+					ctx.clearRect(0, 0, canvas.width, canvas.height);					
+				}
+
+				for (var i = 0; i < circles.length; i++) {
+					var c = circles[i];
+
+					drawCircle(c);
+					c.y += c.speed;
+
+					removeCircleIfOffScreen(c);
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<canvas id='myCanvas'>your browser does 
+		not support the canvas tag</canvas>
+		<label id='paint'><input id='paintCheckbox' type='checkbox' /> Paint</label>
+	</body>
+</html>

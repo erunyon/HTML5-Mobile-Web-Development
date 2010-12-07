@@ -1,0 +1,20 @@
+body {
+	background-image: -webkit-gradient(
+		linear, 
+		0% 0%, 
+		0% 100%, 
+		from(#666666), 
+		to(#000000)
+	);
+}
+
+#paint {
+	z-index: 10;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+
+#patternImage {
+	display: none;
+}

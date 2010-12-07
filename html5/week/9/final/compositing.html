@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Content-Language" content="en"/>
+		<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>Canvas</title>
+		
+		<link rel="stylesheet" href="html5reset.css" type="text/css" media="screen" charset="utf-8" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8">
+
+		<script type="text/javascript">
+			var canvas = null;
+			var ctx = null;
+			
+			window.addEventListener("load", function() {
+				canvas = document.getElementById('myCanvas');
+				ctx = canvas.getContext('2d');
+				
+				addEventListeners();
+				
+				sizeCanvas();
+				drawCanvas();
+			}, false);
+			
+			function addEventListeners() {
+				// Orientation Detection
+				var supportsOrientationChange = "onorientationchange" in window;
+				var orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+				window.addEventListener(orientationEvent, handleOrientationChange, false);
+			}
+			
+			function sizeCanvas() {
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight;
+			}
+			
+			function handleOrientationChange() {
+				sizeCanvas();
+				drawCanvas();
+			}
+			
+			function degreesToRadians(d) {
+				return d * (Math.PI / 180);
+			}
+			
+			function drawCanvas() {
+				// Default
+				// Square
+				ctx.save();
+				ctx.fillStyle = 'rgba(255,0,0,1)';
+				ctx.fillRect(10, 		// X
+							 10, 		// Y
+							 100,		// Width
+							 100		// Height
+							);
+				ctx.restore();
+				
+				// Circle
+				ctx.save();
+				ctx.fillStyle = 'rgba(0,255,0,1)';
+				ctx.beginPath();
+				ctx.arc(110, 110, 50, 0, degreesToRadians(360), true); 
+				ctx.closePath();
+				ctx.fill();
+				ctx.restore();
+				// End Default
+				
+				// source-in
+				ctx.save();
+				// Square
+				ctx.save();
+				ctx.fillStyle = 'rgba(255,0,0,1)';
+				ctx.fillRect(200, 		// X
+							 10, 		// Y
+							 100,		// Width
+							 100		// Height
+							);
+				ctx.restore();
+				
+				ctx.globalCompositeOperation = 'source-in'
+				
+				// Circle
+				ctx.save();
+				ctx.fillStyle = 'rgba(0,255,0,1)';
+				ctx.beginPath();
+				ctx.arc(310, 110, 50, 0, degreesToRadians(360), true); 
+				ctx.closePath();
+				ctx.fill();
+				ctx.restore();
+				
+				ctx.restore();
+				// End source-in
+				
+				// source-out
+				ctx.save();
+				// Square
+				ctx.save();
+				ctx.fillStyle = 'rgba(255,0,0,1)';
+				ctx.fillRect(10, 		// X
+							 210, 		// Y
+							 100,		// Width
+							 100		// Height
+							);
+				ctx.restore();
+				
+				ctx.globalCompositeOperation = 'source-out';
+				
+				// Circle
+				ctx.save();
+				ctx.fillStyle = 'rgba(0,255,0,1)';
+				ctx.beginPath();
+				ctx.arc(110, 310, 50, 0, degreesToRadians(360), true); 
+				ctx.closePath();
+				ctx.fill();
+				ctx.restore();
+				
+				ctx.restore();
+				// End source-out
+			}
+		</script>
+	</head>
+	<body>
+		<canvas id='myCanvas'>your browser does 
+		not support the canvas tag</canvas>
+	</body>
+</html>
