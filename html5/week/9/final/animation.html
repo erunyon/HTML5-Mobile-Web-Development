@@ -23,7 +23,7 @@
 				addEventListeners();
 				
 				sizeCanvas();
-				intervalId = setInterval(drawCanvas, 1000 / 60);
+				intervalId = setInterval(drawCanvas, 1000 / 60); // draw 60 times per second
 			}, false);
 			
 			function addEventListeners() {
@@ -61,7 +61,7 @@
 				ctx.save()
 				ctx.beginPath();
 				ctx.arc(c.x, c.y, 50, 0, degreesToRadians(360), true);
-				ctx.fillStyle = 'rgba(255, 255, 255,' + c.a / 100 + ')';
+				ctx.fillStyle = 'rgba(255, 255, 255,' + c.a / 100 + ')'; // divide by 100 because alpha is 0 to 1
 				ctx.fill();
 				ctx.closePath();
 				ctx.restore();

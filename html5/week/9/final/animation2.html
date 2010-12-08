@@ -97,9 +97,10 @@
 			
 			function drawCanvas() {
 				if (!paintCheckbox.checked) {
-					ctx.clearRect(0, 0, canvas.width, canvas.height);					
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
 				}
 
+        // variation is "var i = circles.length - 1; i >= 0 ; --i"
 				for (var i = 0; i < circles.length; i++) {
 					var c = circles[i];
 

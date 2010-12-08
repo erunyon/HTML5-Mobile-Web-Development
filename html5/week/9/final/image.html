@@ -62,12 +62,15 @@
 			
 			function drawCanvas() {
 				// Normal
+				// x, y
 				ctx.drawImage(image, 0, 0);
 				
 				// Scale
+				// x, y, width, height
 				ctx.drawImage(image, 110, 0, 200, 200);
 				
 				// Slice
+				// source x, source y, source width, source height, canvas x, canvas y, canvas width, canvas height
 				ctx.drawImage(image, 18, 27, 25, 25, 0, 110, 25, 25);
 				
 				// Slice and Scale
@@ -76,7 +79,6 @@
 		</script>
 	</head>
 	<body>
-		<canvas id='myCanvas'>your browser does 
-		not support the canvas tag</canvas>
+		<canvas id='myCanvas'>your browser does not support the canvas tag</canvas>
 	</body>
 </html>

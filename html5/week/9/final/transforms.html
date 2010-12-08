@@ -1,104 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta http-equiv="Content-Language" content="en"/>
-		<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no" />
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<title>Canvas</title>
-		
-		<link rel="stylesheet" href="html5reset.css" type="text/css" media="screen" charset="utf-8" />
-		<link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Language" content="en"/>
+	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<title>Canvas</title>
+	
+	<link rel="stylesheet" href="html5reset.css" type="text/css" media="screen" charset="utf-8" />
+	<link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8">
 
-		<script type="text/javascript">
-			var canvas = null;
-			var ctx = null;
-			var image = null;
+	<script type="text/javascript">
+		var canvas = null;
+		var ctx = null;
+		var image = null;
+		
+		window.addEventListener("load", function() {
+			canvas = document.getElementById('myCanvas');
+			ctx = canvas.getContext('2d');
 			
-			window.addEventListener("load", function() {
-				canvas = document.getElementById('myCanvas');
-				ctx = canvas.getContext('2d');
-				
-				registerEventListeners();
-				
-				sizeCanvas();
+			registerEventListeners();
+			
+			sizeCanvas();
+			loadImage();
+		}, false);
+		
+		function loadImage() {
+			image = new Image();
+			image.src = 'maddy.jpg';
+			image.onload = function() {
+				drawCanvas();
+			}
+		}
+		
+		function registerEventListeners() {
+			// Orientation Detection
+			var supportsOrientationChange = "onorientationchange" in window;
+			var orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+			window.addEventListener(orientationEvent, handleOrientationChange, false);
+		}
+		
+		function sizeCanvas() {
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+		}
+		
+		function handleOrientationChange() {
+			sizeCanvas();
+			if (image) {
+				drawCanvas();
+			}
+			else {
 				loadImage();
-			}, false);
-			
-			function loadImage() {
-				image = new Image();
-				image.src = 'maddy.jpg';
-				image.onload = function() {
-					drawCanvas();
-				}
 			}
+		}
+		
+		function degreesToRadians(d) {
+			return d * (Math.PI / 180);
+		}
+		
+		function drawCanvas() {
+			// Normal
+			ctx.drawImage(image, 0, 0);
 			
-			function registerEventListeners() {
-				// Orientation Detection
-				var supportsOrientationChange = "onorientationchange" in window;
-				var orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
-				window.addEventListener(orientationEvent, handleOrientationChange, false);
-			}
+			// Translate
+			ctx.save();
+			ctx.translate(110, 0); // move coodinate system to the right 110px
+			ctx.drawImage(image, 0, 0);
+			ctx.restore();
 			
-			function sizeCanvas() {
-				canvas.width = window.innerWidth;
-				canvas.height = window.innerHeight;
-			}
+			// Scale
+			ctx.save();
+			ctx.scale(2.0, 2.0); // doubles the scale factor
+			ctx.drawImage(image, 
+				0,				  // X
+				110 / 2,		// Y
+				100 / 2,		// Width
+				100 / 2);		// Height
+			ctx.restore();
 			
-			function handleOrientationChange() {
-				sizeCanvas();
-				if (image) {
-					drawCanvas();
-				}
-				else {
-					loadImage();
-				}
-			}
+			// Flip (Scale)
+			ctx.save();
+			ctx.translate(100,320);
+      ctx.scale(-1,-1); // flips the context
+			ctx.drawImage(image, 0, 0);
+			ctx.restore();
 			
-			function degreesToRadians(d) {
-				return d * (Math.PI / 180);
-			}
-			
-			function drawCanvas() {
-				// Normal
-				ctx.drawImage(image, 0, 0);
-				
-				// Translate
-				ctx.save();
-				ctx.translate(110, 0);
-				ctx.drawImage(image, 0, 0);
-				ctx.restore();
-				
-				// Scale
-				ctx.save();
-				ctx.scale(2.0, 2.0);
-				ctx.drawImage(image, 
-					0,				// X
-					110 / 2,		// Y
-					100 / 2,		// Width
-					100 / 2);		// Height
-				ctx.restore();
-				
-				// Flip (Scale)
-				ctx.save();
-				ctx.translate(100,320)
-				ctx.scale(-1,-1);
-				ctx.drawImage(image, 0, 0);
-				ctx.restore();
-				
-				// Rotate
-				ctx.save();
-				ctx.translate(200, 200);
-				ctx.rotate(degreesToRadians(45));
-				ctx.translate(-(image.width/2), -(image.height/2));
-				ctx.drawImage(image, 0, 0);
-				ctx.restore();
-			}
-		</script>
-	</head>
-	<body>
-		<canvas id='myCanvas'>your browser does 
-		not support the canvas tag</canvas>
-	</body>
+			// Rotate
+			ctx.save();
+			ctx.translate(200, 200);
+      ctx.rotate(degreesToRadians(45));
+      ctx.translate(-(image.width/2), -(image.height/2)); // rotates the image on center
+			ctx.drawImage(image, 0, 0);
+			ctx.restore();
+		}
+	</script>
+</head>
+<body>
+	<canvas id='myCanvas'>your browser does 
+	not support the canvas tag</canvas>
+</body>
 </html>
