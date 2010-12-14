@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Content-Language" content="en"/>
+		
+		<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+		
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		
+		<title>Canvas</title>
+		
+		<link rel="stylesheet" href="html5reset.css" type="text/css" media="screen" charset="utf-8" />
+		
+		<script type="text/javascript">
+			var canvas = null;
+			var ctx = null;
+			
+			var back = null;
+			var bctx = null;
+			
+			var video = null;
+			var vw = 480;
+			var vh = 270;
+			
+			var intervalId = 0;
+			
+			window.addEventListener("load", function() {
+				canvas = document.getElementById('myCanvas');
+				ctx = canvas.getContext('2d');
+				
+				addEventListeners();
+				
+				// Setup Backing Canvas
+				back = document.createElement('canvas');
+				bctx = back.getContext('2d');
+				back.width = vw;
+				back.height = vh;
+				
+				intervalId = setInterval(drawCanvas, 1000 / 30);
+			}, false);
+			
+			function addEventListeners() {
+				// Orientation Detection
+				var supportsOrientationChange = "onorientationchange" in window;
+				var orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+				window.addEventListener(orientationEvent, function() {
+					drawCanvas();
+				}, false);
+				
+				// Video
+				video = document.getElementsByTagName('video')[0];
+				video.addEventListener("ended", function() {
+					clearInterval(intervalId);
+				}, false);
+			}
+			
+			function clearContext() {
+				var w = canvas.width;
+				var h = canvas.height;
+				// console.log(w + 'x' + h);
+				
+				ctx.fillStyle = "#000000";
+				ctx.fillRect(0, 0, w, h);
+			}
+			
+			function drawCanvas() {
+				// clearContext();
+				
+				bctx.drawImage(video, 0, 0);
+				
+				// ImageData
+				var id = bctx.getImageData(0, 0, vw, vh);
+				
+				// Data
+				var data = id.data;
+				
+				for (var i = 0; i < data.length; i += 4) {
+					var r = data[i];
+					var g = data[i+1];
+					var b = data[i+2];
+				
+					// var brightness = (r*3+g*5+b*2);
+				
+					data[i] = (r * 0.393 + g * 0.769 + b * 0.189);
+					data[i+1] = (r * 0.349 + g * 0.686 + b * 0.168);
+					data[i+2] = (r * 0.272 + g * 0.534 + b * 0.131);
+				}
+				
+				id.data = data;
+				
+				ctx.putImageData(id, 0, 0);
+			}
+		</script>
+	</head>
+	<body>
+		<video src='../../../shared/videos/sun.mp4' width='480' height='270' controls>
+			Your browser does not support the video tag.
+		</video>
+		<canvas id='myCanvas' width='480' height='270'>
+			Your browser does not support the canvas tag.
+		</canvas>
+	</body>
+</html>
